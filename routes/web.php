@@ -18,3 +18,6 @@ Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index'])->name(
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/admin-dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('admin_dashboard');
+Route::get('/venue-form/{form_id?}', [App\Http\Controllers\AdminController::class, 'venue_form'])->name('venue_form');
