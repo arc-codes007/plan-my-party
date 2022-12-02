@@ -7,11 +7,24 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @auth
+    <meta name="auth-token" content="{{ Auth::user()->api_token }}">
+    @endauth
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
+    <script>
+        @auth
+            $.ajaxSetup({
+                headers: {
+                    'Authorization': 'Bearer '+$('meta[name="auth-token"]').attr('content')
+                },
+            });
+        @endauth
+    </script>
     <!-- Fonts -->
 
     <!-- Styles -->
@@ -24,5 +37,6 @@
             @yield('content')
         </main>
     </div>
+
 </body>
 </html>

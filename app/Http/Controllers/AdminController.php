@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Venue;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -21,8 +23,5 @@ class AdminController extends Controller
         return view('admin.admin_panel');
     }
 
-    public function venue_form($form_id = false)
-    {
-        return view('admin.venue_form', ['form_id' => $form_id]);
-    }
+
 }

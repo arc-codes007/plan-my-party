@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Venue extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function package()
+    {
+        return $this->hasMany(Package::class);
+    }
 }

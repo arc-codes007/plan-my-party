@@ -37,7 +37,7 @@
                             </div>
                             <div class="d-flex justify-content-center">
                                 <div class="mx-1 text-center"><a href="{{ route('venue_form') }}" class="btn btn-outline-light">Add</a></div>
-                                <div class="mx-1 text-center"><a href="" class="btn btn-outline-light">List</a></div>
+                                <div class="mx-1 text-center"><a href="{{ route('venue_list') }}" class="btn btn-outline-light">List</a></div>
                             </div>
                         </div>
                     </div>
