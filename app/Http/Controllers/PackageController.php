@@ -22,12 +22,11 @@ class PackageController extends Controller
             'name' => 'required',
             'type' => 'required',
             'billing_config' => 'required',
-            'cost' => 'required' ,
-            'min_persons' => 'required' ,
-            'max_persons' => 'required' ,
+            'cost_per_amount' => 'required|numeric',
+            'cost' => 'required|numeric' ,
+            'min_persons' => 'required|numeric' ,
+            'max_persons' => 'required|numeric' ,
             'venue_type' => 'required' ,
-            'timmings' => 'required',
-            'active' => 'required'
         ]);  
 
     
@@ -37,22 +36,21 @@ class PackageController extends Controller
             'venue_id' => $post_data['venue_id'],
             'name' => $post_data['name'],
             'type' => $post_data['type'],
-            'billing_config' => json_encode($post_data['billing_config']),
-            'cost' => $post_data['cost'],
+            'cost' => floatval($post_data['cost']),
             'min_persons' => $post_data['min_persons'],
             'max_persons' => $post_data['max_persons'],
             'venue_type' => $post_data['venue_type'],
-            'timmings' => json_encode($post_data['timmings']),
-            // 'active' => $post_data['active'],
         );
 
-        if($post_data['active']=="on")
-        {        
-            $package_data['active'] = 1;
-        }
-        else{
-            $package_data['active'] = 0;
-        }
+        $billing_config = array(
+            'type' => $post_data['billing_config'],
+            'cost_per_amount' => $post_data['cost_per_amount'],
+        );
+
+        $package_data['billing_config'] = json_encode($billing_config);
+
+        $package_data['active'] = (isset($post_data['active']) && $post_data['active']=="on")? 1 : 0;
+
         if(!empty($post_data['menu']))
         {        
             $package_data['menu'] = json_encode($post_data['menu']);
@@ -69,6 +67,11 @@ class PackageController extends Controller
         {        
             $package_data['contact_phone'] = $post_data['contact_phone'];
         }
+        if(!empty($post_data['timmings']))
+        {
+            $package_data['timmings'] = json_encode($post_data['timmings']);
+        }
+
         if(!empty($post_data['package_id']))
         {
             $package = Package::where('id', $post_data['package_id'])->update($package_data);
@@ -89,7 +92,7 @@ class PackageController extends Controller
 
 
 
-      public function package_list()
+    public function package_list()
     {
         return view('admin.package_list');
     }
@@ -97,26 +100,17 @@ class PackageController extends Controller
     public function fetch_package_list()
     {
         $response_list = array();
+
         foreach(Package::all() as $package)
         {           
-
             $data = array(
                 'id' => $package->id,
                 'name' => $package->name,
-                'venue_id' => $package->venue_id,
+                'venue_id' => $package->venue->name,
                 'type' =>$package->type,
                 'venue_type' => $package->venue_type,                
             );           
-            
-            // $venue_name = Venue::table('venues')
-            // ->select('name')
-            // ->where('id','=',Venue::raw($package['venue_id']))
-            // ->get();
-
-            // $venue_name = Venue::whereId($package['venue_id'])->select('name');
-            // $data['venue_id'] = $venue_name;            
-
-
+                
             $actions = '';
             $actions .= '<a href="'.route('package_form',$package->id).'" class="btn btn-sm btn-info mx-2"><i class="fa-solid text-white fa-pen-to-square"></i></a>';
             $actions .= '<a href="#" class="btn btn-sm btn-success mx-2"><i class="fa-solid text-white fa-plus"></i></a>';
