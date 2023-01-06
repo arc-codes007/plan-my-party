@@ -57,8 +57,8 @@
                                 <h2 class="text-center"><span id="package_count">0</span> Packages</h2>
                             </div>
                             <div class="d-flex justify-content-center">
-                                <div class="mx-1 text-center"><a href="" class="btn btn-outline-light">Add</a></div>
-                                <div class="mx-1 text-center"><a href="" class="btn btn-outline-light">List</a></div>
+                                <div class="mx-1 text-center"><a href="{{ route('package_form') }}" class="btn btn-outline-light">Add</a></div>
+                                <div class="mx-1 text-center"><a href="{{ route('package_list') }}" class="btn btn-outline-light">List</a></div>
                             </div>
                         </div>
                     </div>
