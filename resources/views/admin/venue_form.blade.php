@@ -60,6 +60,17 @@
                     <div class="col-md-4 col-sm-12">
                         <label class="form-label">Rating</label>
                         <input type="number" class="form-control" id="venue_rating" name="venue_rating" max=5>
+
+                        <div class="mt-3">
+                            <label class="form-label">Primary Picture</label>
+                            <input class="form-control" type="file" name="primary_picture" id="primary_picture" accept="image/png, image/jpeg">
+                            <div id="uploaded_primary_picture" class="row mt-2"></div>
+                        </div>
+                        <div class="mt-3">
+                            <label class="form-label">Secondary Pictures</label>
+                            <input class="form-control" multiple type="file" name="secondary_pictures[]" id="secondary_pictures" accept="image/png, image/jpeg">
+                            <div id="uploaded_secondary_pictures" class="row mt-2"></div>
+                        </div>
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <label class="form-label">Timmings</label>
@@ -152,20 +163,42 @@
                         }
                         else if(['cuisines', 'additional_features'].includes(key))
                         {
-                           $('#'+key+' option').each(function (){
-                                let val = $(this).val();
-                                if(res_data[key].includes(val))
-                                {
-                                    $(this).prop('selected', true);
-                                    delete res_data[key][val];
-                                }
-                           }); 
+                            if(res_data[key])
+                            {
+                                $('#'+key+' option').each(function (){
+                                    let val = $(this).val();
+                                    if(res_data[key].includes(val))
+                                    {
+                                        $(this).prop('selected', true);
+                                        delete res_data[key][val];
+                                    }
+                                });
+                            } 
 
                            for(let remaining_val in res_data[key])
                            {
                                 $('#'+key).append(`<option selected value="${res_data[key][remaining_val]}">${res_data[key][remaining_val]}</option>`);
                            }
                            $('#'+key).trigger('change')
+                        }
+                        else if(key == 'primary_picture')
+                        {
+                            let append_html = `<div class="col-10">${res_data.primary_picture.original_name}</div><div class="col-2 text-end"><button onclick="delete_file(${res_data.primary_picture.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
+
+                            $('#uploaded_primary_picture').html(append_html);
+                        }
+                        else if(key == 'secondary_pictures')
+                        {
+                            if(res_data.secondary_pictures)
+
+                            var append_html = '';
+                            for(let sec_file of res_data.secondary_pictures)
+                            {
+                                append_html += `<div class="mt-1 col-10">${sec_file.original_name}</div><div class="mt-1 col-2 text-end"><button onclick="delete_file(${sec_file.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
+                            }
+
+                            $('#uploaded_secondary_pictures').html(append_html);
+
                         }
                         else
                         {
@@ -184,12 +217,14 @@
             e.preventDefault();
             $("#save_btn").prop('disabled', true);
 
-            let form_data = $('#venue_form').serializeArray();
+            let form_data = new FormData(document.getElementById("venue_form"));
 
             $.ajax({
                 url: "{{ route('add_update_venue') }}",
                 type: "POST",
                 data: form_data,
+                processData: false,
+                contentType: false,
                 success: function(res_data) {
                     $("#save_btn").prop('disabled', false);
                 },

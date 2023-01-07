@@ -11,16 +11,6 @@ $.ajaxSetup({
 
 window.alertify = require('alertifyjs');
 
-$(document).ajaxError(function( event, response) {
-    if(response.status == 402)
-    {
-        if(Object.keys(response.responseJSON).includes('redirect'))
-        {
-            window.location.href = response.responseJSON.redirect;
-        }
-    }
-});
-
 require('select2');
 
 $(document).ready(function(){
@@ -115,3 +105,24 @@ alertify.defaults = {
         postinit:function(instance){},
     },
 };
+
+$(document).ajaxError(function( event, response) {
+    if(response.status == 402)
+    {
+        if(Object.keys(response.responseJSON).includes('redirect'))
+        {
+            window.location.href = response.responseJSON.redirect;
+        }
+    }
+    else
+    {  
+        let errors = response.responseJSON.errors;
+        let error_str = "<ul>";
+        for(let field_name in errors)
+        {
+            error_str += "<li>"+errors[field_name]+"</li>"
+        }
+        error_str += "</ul>";
+        alertify.alert('Error', error_str);
+    }
+});

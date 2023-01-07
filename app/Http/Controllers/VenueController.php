@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Venue;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 class VenueController extends Controller
 {
     public function __construct()
@@ -30,7 +31,9 @@ class VenueController extends Controller
             'contact_phone' => 'required | digits:10',
             'address' => 'required',
             'total_capacity' => 'required',
-            'timmings' => 'required'
+            'timmings' => 'required',
+            'primary_picture' => 'required|image',
+            'secondary_pictures.*' => 'image',
         ]);
 
         $post_data = $request->all(); 
@@ -66,6 +69,8 @@ class VenueController extends Controller
             $venue_data['venue_rating'] = $post_data['venue_rating'];
         }
 
+        DB::beginTransaction();
+
         if(!empty($post_data['venue_id']))
         {
             $venue = Venue::where('id', $post_data['venue_id'])->update($venue_data);
@@ -77,6 +82,54 @@ class VenueController extends Controller
 
         if($venue)
         {
+
+            $primary_image = $request->file('primary_picture');
+            $original_name = $primary_image->getClientOriginalName();
+            $path = $primary_image->store('images/venue');
+
+            $primary_pic_data = array(
+                'entity_id' => $venue->id,
+                'belongs_to' => 'venue',
+                'type' => 'primary',
+                'original_name' => $original_name,
+                'image_path' => $path,
+            );
+
+            $primary_pic = Image::create($primary_pic_data);
+
+            $saved_succesfully = TRUE;
+            if($request->hasFile('secondary_pictures'))
+            {
+                foreach($request->file('secondary_pictures') as $key => $secondary_image)
+                {
+                    $original_name = $secondary_image->getClientOriginalName();
+                    $path = $secondary_image->store('images/venue');
+        
+                    $primary_pic_data = array(
+                        'entity_id' => $venue->id,
+                        'belongs_to' => 'venue',
+                        'type' => 'secondary',
+                        'original_name' => $original_name,
+                        'image_path' => $path,
+                    );
+
+                    if( ! Image::create($primary_pic_data))
+                    {
+                        $saved_succesfully = FALSE;
+                    }
+                }
+            }
+
+            if($primary_pic && $saved_succesfully)
+            {
+                DB::commit();
+            }
+            else
+            {
+                DB::rollBack();
+                return new Response(['errors' => ['Something went wrong']], 400);
+            }
+
             return new Response(['redirect' => route('venue_list')], 402);
         }
 
@@ -133,6 +186,22 @@ class VenueController extends Controller
         }
         $venue_rawdata = $venue_rawdata->getAttributes();
 
+        $primary_picture = Image::where(['entity_id' => $venue_id, 'belongs_to' => 'venue', 'type' => 'primary'])->first();
+
+        $secondary_picture_coll = Image::where(['entity_id' => $venue_id, 'belongs_to' => 'venue', 'type' => 'secondary'])->get();
+        $secondary_pictures = array();
+
+        if(!empty($secondary_picture_coll))
+        {
+            foreach($secondary_picture_coll as $file)
+            {
+                $secondary_pictures[] = array(
+                    'id' => $file->id,
+                    'original_name' => $file->original_name,
+                );
+            }
+        }
+        
         $venue_details = array(
             'name' => $venue_rawdata['name'],
             'type' => $venue_rawdata['type'],
@@ -146,6 +215,11 @@ class VenueController extends Controller
             'additional_features' => json_decode($venue_rawdata['additional_features'], TRUE),
             'venue_rating' => $venue_rawdata['venue_rating'],
             'timmings' => json_decode($venue_rawdata['timmings'], TRUE),
+            'primary_picture' => array(
+                'id' => $primary_picture->id,
+                'original_name' => $primary_picture->original_name,
+            ),
+            'secondary_pictures' => $secondary_pictures,
         );
 
 
