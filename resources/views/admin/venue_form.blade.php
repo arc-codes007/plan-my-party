@@ -171,7 +171,7 @@
                         }
                         $('#' + key).trigger('change')
                     } else if (key == 'primary_picture') {
-                        let append_html = `<div id="append_primary" class="col-10">${res_data.primary_picture.original_name}</div><div class="col-2 text-end"><button role="button" onclick="delete_file(${res_data.primary_picture.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
+                        let append_html = `<div id="append_primary" class="col-10">${res_data.primary_picture.original_name}</div><div class="col-2 text-end"><button role="button" onclick="delete_file(event,${res_data.primary_picture.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
                         console.log("id"+res_data.primary_picture.id);
 
                         $('#uploaded_primary_picture').html(append_html);
@@ -180,7 +180,7 @@
 
                             var append_html = '';
                         for (let sec_file of res_data.secondary_pictures) {
-                            append_html += `<div class="mt-1 col-10">${sec_file.original_name}</div><div class="mt-1 col-2 text-end"><button role="button" onclick="delete_file(${sec_file.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
+                            append_html += `<div class="mt-1 col-10">${sec_file.original_name}</div><div class="mt-1 col-2 text-end"><button role="button" onclick="delete_file(event,${sec_file.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
                         }
 
                         $('#uploaded_secondary_pictures').html(append_html);
@@ -227,22 +227,19 @@
         }
     }
 
-    function delete_file(image_id){
-        console.log(image_id);
+    function delete_file(e,image_id){
+        e.preventDefault();
         $.ajax({
             url: "{{route('delete_image')}}",
             type: "POST",
-            data: {
-                image_id,//variable:data(jo ki function me aaya hai)
-            },
-            success: function(res_data) {
-                // location.reload();
-                console.log("form success");
-                console.log(res_data);
+            data: {image_id},
+            success: function(res_data) 
+            {
+                $(e.target).parent().parent().remove();
+                alertify.alert('Success', res_data.responseJSON.message);
             },
             error: function(res_data) {
-                console.log('Error', 'form Something Went Wrong!');
-                console.log(res_data);
+                alertify.alert('Error', res_data.responseJSON.error);
             }
         });
     }

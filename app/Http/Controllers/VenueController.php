@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
 class VenueController extends Controller
 {
     public function __construct()
@@ -24,7 +26,9 @@ class VenueController extends Controller
 
     public function add_update_venue_form(Request $request)
     {
-        $request->validate([
+
+
+        $validations = array(
             'name' => 'required',
             'type' => 'required',
             'contact_email' => 'required | email',
@@ -34,7 +38,20 @@ class VenueController extends Controller
             'timmings' => 'required',
             'primary_picture' => 'required|image',
             'secondary_pictures.*' => 'image',
-        ]);
+        );
+
+        $primary_pic_already_exists = FALSE;
+        if(isset($request->venue_id))
+        {
+            $primary_picture = Image::where(['entity_id' => $request->venue_id, 'belongs_to' => 'venue', 'type' => 'primary'])->first();
+            if(!empty($primary_picture))
+            {
+                $primary_pic_already_exists = TRUE;
+                unset($validations['primary_picture']);
+            }
+        }
+
+        $request->validate($validations);
 
         $post_data = $request->all(); 
 
@@ -73,7 +90,8 @@ class VenueController extends Controller
 
         if(!empty($post_data['venue_id']))
         {
-            $venue = Venue::where('id', $post_data['venue_id'])->update($venue_data);
+            $venue = Venue::where('id', $post_data['venue_id'])->first();
+            $venue->update($venue_data);
         }
         else
         {
@@ -82,20 +100,26 @@ class VenueController extends Controller
 
         if($venue)
         {
+            if(! $primary_pic_already_exists)
+            {
+                $primary_image = $request->file('primary_picture');
+                $original_name = $primary_image->getClientOriginalName();
+                $path = $primary_image->store('images/venue');
 
-            $primary_image = $request->file('primary_picture');
-            $original_name = $primary_image->getClientOriginalName();
-            $path = $primary_image->store('images/venue');
+                $primary_pic_data = array(
+                    'entity_id' => $venue->id,
+                    'belongs_to' => 'venue',
+                    'type' => 'primary',
+                    'original_name' => $original_name,
+                    'image_path' => $path,
+                );
 
-            $primary_pic_data = array(
-                'entity_id' => $venue->id,
-                'belongs_to' => 'venue',
-                'type' => 'primary',
-                'original_name' => $original_name,
-                'image_path' => $path,
-            );
-
-            $primary_pic = Image::create($primary_pic_data);
+                $primary_pic = Image::create($primary_pic_data);
+            }
+            else
+            {
+                $primary_pic = TRUE;
+            }
 
             $saved_succesfully = TRUE;
             if($request->hasFile('secondary_pictures'))
@@ -105,7 +129,7 @@ class VenueController extends Controller
                     $original_name = $secondary_image->getClientOriginalName();
                     $path = $secondary_image->store('images/venue');
         
-                    $primary_pic_data = array(
+                    $secondary_pic_data = array(
                         'entity_id' => $venue->id,
                         'belongs_to' => 'venue',
                         'type' => 'secondary',
@@ -113,7 +137,7 @@ class VenueController extends Controller
                         'image_path' => $path,
                     );
 
-                    if( ! Image::create($primary_pic_data))
+                    if( ! Image::create($secondary_pic_data))
                     {
                         $saved_succesfully = FALSE;
                     }
@@ -135,34 +159,34 @@ class VenueController extends Controller
 
     }
 
-    public function delete_image(Request $request){
-        $image_data = $request->all();
-        // $image = array(
-        //     'id'=>$request['image_id'],
-        // );
-        // print_r($image_data);
-        // exit;
+    public function delete_image(Request $request)
+    {
+
+        $request->validate([
+            'image_id' => 'required',
+        ]);
+
         $image_id = $request->image_id;
-        print_r($image_id);
-        $image_rawdata = Image::find($image_id);
-        if(empty($image_rawdata))
+
+        $image = Image::find($image_id);
+
+        if(empty($image))
         {
-            return new Response(['redirect' => route('venue_form')], 402);
+            return new Response(['errors' => ['Something went wrong']], 400);
         }
-        $image_rawdata = $image_rawdata->getAttributes();
-        print_r($image_rawdata);
-        print_r($image_rawdata['type']);
-        // exit;
-        $image_query = Image::where(['id' => $image_rawdata['id']])->delete();
-        // $image_query_data = Image::where(['id' => $image_data['image_id'], 'type' => 'primary'])->first();
-        print_r($image_query);
-        // echo("delete controller");
-        if($image_query == 1){
-            print_r("controller success");
-            return new Response('Success' ,200);    
-        }else
-        print_r("controller error");
-        return new Response(['Error'], 401);        
+
+        $image_path = $image->image_path;
+
+        Storage::delete($image_path);
+        
+        if($image->delete())
+        {
+            return new Response(['message' => 'File deleted successfully'] ,200);    
+        }
+        else
+        {
+            return new Response(['errors' => ['Something went wrong']], 400);
+        }
     }
 
 
