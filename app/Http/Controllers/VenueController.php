@@ -135,6 +135,37 @@ class VenueController extends Controller
 
     }
 
+    public function delete_image(Request $request){
+        $image_data = $request->all();
+        // $image = array(
+        //     'id'=>$request['image_id'],
+        // );
+        // print_r($image_data);
+        // exit;
+        $image_id = $request->image_id;
+        print_r($image_id);
+        $image_rawdata = Image::find($image_id);
+        if(empty($image_rawdata))
+        {
+            return new Response(['redirect' => route('venue_form')], 402);
+        }
+        $image_rawdata = $image_rawdata->getAttributes();
+        print_r($image_rawdata);
+        print_r($image_rawdata['type']);
+        // exit;
+        $image_query = Image::where(['id' => $image_rawdata['id']])->delete();
+        // $image_query_data = Image::where(['id' => $image_data['image_id'], 'type' => 'primary'])->first();
+        print_r($image_query);
+        // echo("delete controller");
+        if($image_query == 1){
+            print_r("controller success");
+            return new Response('Success' ,200);    
+        }else
+        print_r("controller error");
+        return new Response(['Error'], 401);        
+    }
+
+
     public function venue_list()
     {
         return view('admin.venue_list');

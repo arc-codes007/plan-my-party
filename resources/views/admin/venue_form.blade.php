@@ -5,11 +5,11 @@
 <div class="container">
     <form id="venue_form">
         @if (!empty($venue_id))
-            <input type="hidden" name="venue_id" value="{{$venue_id}}">
+        <input type="hidden" name="venue_id" value="{{$venue_id}}">
         @endif
-    <div class="card mb-5">
-        <div class="card-body">
-            <div class="card-title display-5 text-center">Venue Form</div>
+        <div class="card mb-5">
+            <div class="card-body">
+                <div class="card-title display-5 text-center">Venue Form</div>
                 <div class="row gap-4 justify-content-center">
                     <div class="col-md-4 col-sm-12">
                         <label class="form-label">Name</label>
@@ -82,136 +82,119 @@
                                 <th>To :</th>
                             </tr>
                             @php
-                               $weekdays = array('monday','tuesday','wednesday','thursday','friday','saturday','sunday'); 
+                            $weekdays = array('monday','tuesday','wednesday','thursday','friday','saturday','sunday');
                             @endphp
                             @foreach ($weekdays as $day)
-                                <tr>
-                                    <td>
-                                        {{ucfirst($day)}}
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="{{$day}}" onclick="enable_disable_time('{{$day}}')">
-                                        </div>     
-                                    </td>
-                                    <td>
-                                        <select disabled name="timmings[{{$day}}][from]" id="{{$day}}_from" class="{{$day.'time'}}" data-width="100%">
-                                            <option value="12am">12 AM</option>
-                                            @for ($hour = 1; $hour < 12; ++$hour)
-                                                <option value="{{$hour.'am'}}">{{$hour.' AM'}}</option>
+                            <tr>
+                                <td>
+                                    {{ucfirst($day)}}
+                                </td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="{{$day}}" onclick="enable_disable_time('{{$day}}')">
+                                    </div>
+                                </td>
+                                <td>
+                                    <select disabled name="timmings[{{$day}}][from]" id="{{$day}}_from" class="{{$day.'time'}}" data-width="100%">
+                                        <option value="12am">12 AM</option>
+                                        @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.'am'}}">{{$hour.' AM'}}</option>
                                             @endfor
                                             <option value="12pm">12 PM</option>
-                                            @for ($hour = 1; $hour < 12; ++$hour)
-                                                <option value="{{$hour.'pm'}}">{{$hour.' PM'}}</option>
-                                            @endfor
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select disabled name="timmings[{{$day}}][to]" id="{{$day}}_to" class="{{$day.'time'}}" data-width="100%">
-                                            <option value="12am">12 AM</option>
-                                            @for ($hour = 1; $hour < 12; ++$hour)
-                                                <option value="{{$hour.'am'}}">{{$hour.' AM'}}</option>
+                                            @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.'pm'}}">{{$hour.' PM'}}</option>
+                                                @endfor
+                                    </select>
+                                </td>
+                                <td>
+                                    <select disabled name="timmings[{{$day}}][to]" id="{{$day}}_to" class="{{$day.'time'}}" data-width="100%">
+                                        <option value="12am">12 AM</option>
+                                        @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.'am'}}">{{$hour.' AM'}}</option>
                                             @endfor
                                             <option value="12pm">12 PM</option>
-                                            @for ($hour = 1; $hour < 12; ++$hour)
-                                                <option value="{{$hour.'pm'}}">{{$hour.' PM'}}</option>
-                                            @endfor
-                                        </select>
-                                    </td>
-                                </tr>   
+                                            @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.'pm'}}">{{$hour.' PM'}}</option>
+                                                @endfor
+                                    </select>
+                                </td>
+                            </tr>
                             @endforeach
 
-                        </table>                        
+                        </table>
                     </div>
                 </div>
 
 
+            </div>
         </div>
-    </div>
-    <div class="fixed-bottom row bg-white p-3 justify-content-end">
-        <div class="col-sm-3">
-            <button type="submit" id="save_btn" class="btn btn-danger text-white">Save</button>
-            <button type="reset" class="btn btn-outline-danger">Reset</button>
+        <div class="fixed-bottom row bg-white p-3 justify-content-end">
+            <div class="col-sm-3">
+                <button type="submit" id="save_btn" class="btn btn-danger text-white">Save</button>
+                <button type="reset" class="btn btn-outline-danger">Reset</button>
+            </div>
         </div>
-    </div>
     </form>
 </div>
 
 <script>
-     $(document).ready(function(){
+    $(document).ready(function() {
 
         @if(!empty($venue_id))
 
-            let venue_id = "{{$venue_id}}";
-            $("#save_btn").prop('disabled', true);
-            $.ajax({
-                url: "{{ route('fetch_venue_details') }}",
-                type: "GET",
-                data: {venue_id},
-                success: function(res_data) {
-                    for(let key in res_data)
-                    {
-                        if(key == 'timmings')
-                        {
-                            for(let day in res_data.timmings)
-                            {
-                                $('#'+day).prop("checked", true);
-                                $('.'+day+'time').prop("disabled", false);
-                                $('#'+day+'_from').val(res_data.timmings[day]['from']).trigger('change');
-                                $('#'+day+'_to').val(res_data.timmings[day]['to']).trigger('change');
-                            }
+        let venue_id = "{{$venue_id}}";
+        $("#save_btn").prop('disabled', true);
+        $.ajax({
+            url: "{{ route('fetch_venue_details') }}",
+            type: "GET",
+            data: {
+                venue_id
+            },
+            success: function(res_data) {
+                for (let key in res_data) {
+                    if (key == 'timmings') {
+                        for (let day in res_data.timmings) {
+                            $('#' + day).prop("checked", true);
+                            $('.' + day + 'time').prop("disabled", false);
+                            $('#' + day + '_from').val(res_data.timmings[day]['from']).trigger('change');
+                            $('#' + day + '_to').val(res_data.timmings[day]['to']).trigger('change');
                         }
-                        else if(['cuisines', 'additional_features'].includes(key))
-                        {
-                            if(res_data[key])
-                            {
-                                $('#'+key+' option').each(function (){
-                                    let val = $(this).val();
-                                    if(res_data[key].includes(val))
-                                    {
-                                        $(this).prop('selected', true);
-                                        delete res_data[key][val];
-                                    }
-                                });
-                            } 
+                    } else if (['cuisines', 'additional_features'].includes(key)) {
+                        if (res_data[key]) {
+                            $('#' + key + ' option').each(function() {
+                                let val = $(this).val();
+                                if (res_data[key].includes(val)) {
+                                    $(this).prop('selected', true);
+                                    delete res_data[key][val];
+                                }
+                            });
+                        }
 
-                           for(let remaining_val in res_data[key])
-                           {
-                                $('#'+key).append(`<option selected value="${res_data[key][remaining_val]}">${res_data[key][remaining_val]}</option>`);
-                           }
-                           $('#'+key).trigger('change')
+                        for (let remaining_val in res_data[key]) {
+                            $('#' + key).append(`<option selected value="${res_data[key][remaining_val]}">${res_data[key][remaining_val]}</option>`);
                         }
-                        else if(key == 'primary_picture')
-                        {
-                            let append_html = `<div class="col-10">${res_data.primary_picture.original_name}</div><div class="col-2 text-end"><button onclick="delete_file(${res_data.primary_picture.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
+                        $('#' + key).trigger('change')
+                    } else if (key == 'primary_picture') {
+                        let append_html = `<div id="append_primary" class="col-10">${res_data.primary_picture.original_name}</div><div class="col-2 text-end"><button role="button" onclick="delete_file(${res_data.primary_picture.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
+                        console.log("id"+res_data.primary_picture.id);
 
-                            $('#uploaded_primary_picture').html(append_html);
-                        }
-                        else if(key == 'secondary_pictures')
-                        {
-                            if(res_data.secondary_pictures)
+                        $('#uploaded_primary_picture').html(append_html);
+                    } else if (key == 'secondary_pictures') {
+                        if (res_data.secondary_pictures)
 
                             var append_html = '';
-                            for(let sec_file of res_data.secondary_pictures)
-                            {
-                                append_html += `<div class="mt-1 col-10">${sec_file.original_name}</div><div class="mt-1 col-2 text-end"><button onclick="delete_file(${sec_file.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
-                            }
-
-                            $('#uploaded_secondary_pictures').html(append_html);
-
+                        for (let sec_file of res_data.secondary_pictures) {
+                            append_html += `<div class="mt-1 col-10">${sec_file.original_name}</div><div class="mt-1 col-2 text-end"><button role="button" onclick="delete_file(${sec_file.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
                         }
-                        else
-                        {
-                            $('#'+key).val(res_data[key]);
-                        }
+
+                        $('#uploaded_secondary_pictures').html(append_html);
+
+                    } else {
+                        $('#' + key).val(res_data[key]);
                     }
-                    $("#save_btn").prop('disabled', false);
-                },
-                error: function(res_data) {
                 }
-            });
+                $("#save_btn").prop('disabled', false);
+            },
+            error: function(res_data) {}
+        });
         @endif
-            
+
 
         $('#venue_form').submit(function(e) {
             e.preventDefault();
@@ -236,16 +219,32 @@
         });
     });
 
-    function enable_disable_time(day)
-    {
-        if($('#'+day).is(":checked"))
-        {
-            $('.'+day+'time').prop('disabled', false);
+    function enable_disable_time(day) {
+        if ($('#' + day).is(":checked")) {
+            $('.' + day + 'time').prop('disabled', false);
+        } else {
+            $('.' + day + 'time').prop('disabled', true);
         }
-        else
-        {
-            $('.'+day+'time').prop('disabled', true);
-        }
+    }
+
+    function delete_file(image_id){
+        console.log(image_id);
+        $.ajax({
+            url: "{{route('delete_image')}}",
+            type: "POST",
+            data: {
+                image_id,//variable:data(jo ki function me aaya hai)
+            },
+            success: function(res_data) {
+                // location.reload();
+                console.log("form success");
+                console.log(res_data);
+            },
+            error: function(res_data) {
+                console.log('Error', 'form Something Went Wrong!');
+                console.log(res_data);
+            }
+        });
     }
 </script>
 

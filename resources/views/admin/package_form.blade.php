@@ -98,6 +98,11 @@
                         <button role="button" data-bs-toggle="tooltip" title="Add" class="btn btn-sm btn-success mx-2" onclick="add_menu_section(event)"><i class="fa-solid fa-plus fa-lg"></i></button>
                     </div>
                     <div class="accordion mt-3" id="menu_area"></div>
+                    <div class="mt-3">
+                            <label class="form-label h5">Package Image</label>
+                            <input class="form-control" type="file" name="primary_picture" id="primary_picture" accept="image/png, image/jpeg">
+                            <div id="uploaded_primary_picture" class="row mt-2"></div>
+                        </div>
                 </div>  
                 <div class="col-md-4 col-sm-12">
                     <label class="form-label h5">Timmings**</label>
@@ -211,6 +216,12 @@
                            }
                            $('#'+key).trigger('change')
                         }
+                        else if(key == 'primary_picture')
+                        {
+                            let append_html = `<div class="col-10">${res_data.primary_picture.original_name}</div><div class="col-2 text-end"><button onclick="delete_file(${res_data.primary_picture.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
+
+                            $('#uploaded_primary_picture').html(append_html);
+                        }
                         else if(key == 'menu')
                         {
                             for(let menu_type in res_data.menu)
@@ -277,12 +288,15 @@
             e.preventDefault();
             $("#save_btn").prop('disabled', true);
 
-            let form_data = $('#package_form').serializeArray();
+            // let form_data = $('#package_form').serializeArray();
+            let form_data = new FormData(document.getElementById("package_form"));
 
             $.ajax({
                 url: "{{ route('add_update_package') }}",
                 type: "POST",
                 data: form_data,
+                processData: false,
+                contentType: false,
                 success: function(res_data) {
                     $("#save_btn").prop('disabled', false);
                 },

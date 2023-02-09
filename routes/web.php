@@ -25,6 +25,7 @@ Route::get('/venue-form/{venue_id?}', [App\Http\Controllers\VenueController::cla
 Route::get('/venue-list', [App\Http\Controllers\VenueController::class, 'venue_list'])->name('venue_list');
 Route::get('/package-form/{package_id?}', [App\Http\Controllers\PackageController::class, 'package_form'])->name('package_form');
 Route::get('/package-list', [App\Http\Controllers\PackageController::class, 'package_list'])->name('package_list');
+Route::get('/reco_form', [App\Http\Controllers\FormController::class, 'reco_form'])->name('reco_form');
 
 
 

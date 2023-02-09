@@ -32,7 +32,7 @@
 </head>
 <body>
     <div>
-        @include('components.navbar');
+        @include('components.navbar')
         <main class="py-4">
             @yield('content')
         </main>
