@@ -26,6 +26,12 @@ Route::middleware('auth:api')->post('/delete_image', [App\Http\Controllers\Venue
 Route::middleware('auth:api')->post('/add-update-package-form', [App\Http\Controllers\PackageController::class, 'add_update_package_form'])->name('add_update_package');
 Route::middleware('auth:api')->get('/fetch-package-list', [App\Http\Controllers\PackageController::class, 'fetch_package_list'])->name('fetch_package_list');
 Route::middleware('auth:api')->get('/fetch-package-details', [App\Http\Controllers\PackageController::class, 'fetch_package_details'])->name('fetch_package_details');
+Route::get('/package/all-packages', [App\Http\Controllers\PackageController::class, 'fetch_all_packages'])->name('fetch_all_packages_data');
 
 Route::middleware('auth:api')->get('/fetch_venues', [App\Http\Controllers\FormController::class, 'fetch_venues'])->name('fetch_venues');
 Route::middleware('auth:api')->post('/party_pref', [App\Http\Controllers\FormController::class, 'party_pref'])->name('party_pref');
+
+Route::middleware('auth:api')->get('/admin/stats', [App\Http\Controllers\AdminController::class, 'fetch_admindash_stats'])->name('fetch_admin_dash_stats');
+
+
+

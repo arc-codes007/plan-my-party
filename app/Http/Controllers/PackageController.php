@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use App\Models\Image;
 use App\Models\Venue;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PackageController extends Controller
 {
@@ -26,8 +28,20 @@ class PackageController extends Controller
             'cost' => 'required|numeric' ,
             'min_persons' => 'required|numeric' ,
             'max_persons' => 'required|numeric' ,
-            'venue_type' => 'required' ,
+            'venue_type' => 'required',
+            'primary_picture' => 'required|image',
         ]);  
+
+        $primary_pic_already_exists = FALSE;
+        if(isset($request->package_id))
+        {
+            $primary_picture = Image::where(['entity_id' => $request->package_id, 'belongs_to' => 'package', 'type' => 'primary'])->first();
+            if(!empty($primary_picture))
+            {
+                $primary_pic_already_exists = TRUE;
+                unset($validations['primary_picture']);
+            }
+        }
 
     
         $post_data = $request->all(); 
@@ -72,24 +86,55 @@ class PackageController extends Controller
             $package_data['timmings'] = json_encode($post_data['timmings']);
         }
 
+        DB::beginTransaction();
+        
         if(!empty($post_data['package_id']))
         {
-            $package = Package::where('id', $post_data['package_id'])->update($package_data);
+            $package = Package::where('id', $post_data['package_id'])->first();
+            $package->update($package_data);
         }
         else
         {
             $package = Package::create($package_data);
         }
+
         if($package)
         {
+            if(! $primary_pic_already_exists)
+            {
+                $primary_image = $request->file('primary_picture');
+                $original_name = $primary_image->getClientOriginalName();
+                $path = $primary_image->store('images/package');
+
+                $primary_pic_data = array(
+                    'entity_id' => $package->id,
+                    'belongs_to' => 'package',
+                    'type' => 'primary',
+                    'original_name' => $original_name,
+                    'image_path' => $path,
+                );
+
+                $primary_pic = Image::create($primary_pic_data);
+            }
+            else
+            {
+                $primary_pic = TRUE;
+            }
+
+            if($primary_pic)
+            {
+                DB::commit();
+            }
+            else
+            {
+                DB::rollBack();
+                return new Response(['errors' => ['Something went wrong']], 400);
+            }
+
             return new Response(['redirect' => route('package_list')], 402);
+
         }
     }
-
-
-
-
-
 
 
     public function package_list()
@@ -135,8 +180,9 @@ class PackageController extends Controller
         }
         $package_rawdata = $package_rawdata->getAttributes();
 
+        $primary_picture = Image::where(['entity_id' => $package_id, 'belongs_to' => 'package', 'type' => 'primary'])->first();
+
         $package_details = array(
-            
             'venue_id' => $package_rawdata['venue_id'],
             'name' => $package_rawdata['name'],
             'type' => $package_rawdata['type'],
@@ -152,15 +198,54 @@ class PackageController extends Controller
             'contact_phone' => $package_rawdata['contact_phone'],
         );
 
-             if($package_rawdata['active']== 1)
-        {        
-            $package_details['active'] = "on";
-        }
-        elseif($package_rawdata['active']==0)
+        if(!empty($primary_picture))
         {
-            $package_details['active'] = "off";
-        }          
+            $package_details['primary_picture'] = array(
+                'id' => $primary_picture->id,
+                'original_name' => $primary_picture->original_name,
+            );
+        }
+
+        $package_details['active'] = ($package_rawdata['active']== 1) ? 'on' : 'off';
+
         return new Response($package_details, 200);
+
+    }
+
+    public function fetch_all_packages()
+    {
+        $packages = Package::orderBy('rating', 'desc')->limit(10)->get();
+        if(empty($packages))
+        {
+            return new Response(['errors' => 'No Package Found!'], 400);
+        }
+        {
+            $final_packages_data = array();
+
+            foreach($packages as $package)
+            {
+                $primary_picture = Image::where(['entity_id' => $package->id, 'belongs_to' => 'package', 'type' => 'primary'])->first();
+
+                $package_data = array(
+                    'name' => $package->name,
+                    'image_src' => asset($primary_picture->image_path),
+                    'venue_name' => $package->venue->name,
+                    'address' => $package->venue->address,
+                    'gmap_link' => $package->venue->gmap_location,
+                    'rating' => $package->rating,
+                    'additional_features' => (empty($package->additional_details)) ? array() : json_decode($package->additional_details, TRUE),
+                    'parking_available' => ($package->venue->parking_capacity > 0) ? TRUE : FALSE
+                );
+
+                $final_packages_data[] = $package_data;
+            }
+
+            $response_data = array(
+                'packages' => $final_packages_data
+            );
+
+            return new Response($response_data, 200);
+        }
 
     }
 }

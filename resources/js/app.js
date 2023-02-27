@@ -126,3 +126,6 @@ $(document).ajaxError(function( event, response) {
         alertify.alert('Error', error_str);
     }
 });
+
+
+import "./common_functions";

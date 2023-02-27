@@ -29,6 +29,7 @@ class CreatePackagesTable extends Migration
             $table->string('contact_phone')->nullable();
             $table->json('additional_details')->nullable();
             $table->json('timmings')->nullable();
+            $table->integer('rating')->nullable();
             $table->boolean('active');
             $table->timestamps();
         });

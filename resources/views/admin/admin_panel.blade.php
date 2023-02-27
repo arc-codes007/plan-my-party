@@ -89,4 +89,23 @@
         </div>
     </div>
 </div>
+
+<script>
+
+$(document).ready(function()
+{
+    $.ajax({
+            url: "{{ route('fetch_admin_dash_stats') }}",
+            type: "GET",
+            success: function(response) {
+                $('#user_count').html(response.data.users);
+                $('#venue_count').html(response.data.venues);
+                $('#package_count').html(response.data.packages);
+            },
+            error: function(res_data) {
+            }
+        });
+});
+
+</script>
 @endsection

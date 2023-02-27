@@ -218,7 +218,7 @@
                         }
                         else if(key == 'primary_picture')
                         {
-                            let append_html = `<div class="col-10">${res_data.primary_picture.original_name}</div><div class="col-2 text-end"><button onclick="delete_file(${res_data.primary_picture.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
+                            let append_html = `<div class="col-10">${res_data.primary_picture.original_name}</div><div class="col-2 text-end"><button onclick="delete_file(event,${res_data.primary_picture.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
 
                             $('#uploaded_primary_picture').html(append_html);
                         }
@@ -380,6 +380,23 @@
     {
         e.preventDefault();
         $(self).closest('.accordion-item').remove();
+    }
+
+    function delete_file(e,image_id){
+        e.preventDefault();
+        $.ajax({
+            url: "{{route('delete_image')}}",
+            type: "POST",
+            data: {image_id},
+            success: function(res_data) 
+            {
+                $(e.target).parent().parent().remove();
+                alertify.alert('Success', res_data.responseJSON.message);
+            },
+            error: function(res_data) {
+                alertify.alert('Error', res_data.responseJSON.error);
+            }
+        });
     }
       
 </script>
