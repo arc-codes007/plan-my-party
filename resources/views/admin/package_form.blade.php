@@ -37,7 +37,7 @@
 
                 <div class="col-md-4 col-sm-12">
                     <label class="form-label h5">Billing Type</label>
-                    <select name="billing_config[]" id="billing_config" class="form-control" required>
+                    <select name="billing_config" id="billing_config" class="form-control" required>
                         <option value="per_person">Per Person</option>
                         <option value="per_hour">Per Hour </option>
                     </select>

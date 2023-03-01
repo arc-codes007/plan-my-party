@@ -58,7 +58,7 @@ class PackageController extends Controller
 
         $billing_config = array(
             'type' => $post_data['billing_config'],
-            'cost_per_amount' => $post_data['cost_per_amount'],
+            'amount' => $post_data['cost_per_amount'],
         );
 
         $package_data['billing_config'] = json_encode($billing_config);
@@ -214,7 +214,7 @@ class PackageController extends Controller
 
     public function fetch_all_packages()
     {
-        $packages = Package::orderBy('rating', 'desc')->limit(10)->get();
+        $packages = Package::where('active',1)->orderBy('rating', 'desc')->limit(10)->get();
         if(empty($packages))
         {
             return new Response(['errors' => 'No Package Found!'], 400);
@@ -227,6 +227,7 @@ class PackageController extends Controller
                 $primary_picture = Image::where(['entity_id' => $package->id, 'belongs_to' => 'package', 'type' => 'primary'])->first();
 
                 $package_data = array(
+                    'package_id' => $package->id,
                     'name' => $package->name,
                     'image_src' => asset($primary_picture->image_path),
                     'venue_name' => $package->venue->name,
@@ -246,6 +247,48 @@ class PackageController extends Controller
 
             return new Response($response_data, 200);
         }
+    }
 
+    public function get_package_details(Request $request)
+    {
+        $request->validate([
+            'package_id' => 'required'
+        ]);
+
+        $package_id = $request->package_id;
+
+        $package = Package::find($package_id);
+        $primary_picture = Image::where(['entity_id' => $package_id, 'belongs_to' => 'package', 'type' => 'primary'])->first();
+
+        $pricing = json_decode($package->billing_config, TRUE);
+        $pricing['cost'] = $package->cost;
+
+        $package_details  = array(
+            'name' => $package->name,
+            'package_type' => $package->type,
+            'image_src' => asset($primary_picture->image_path),
+            'menu' => (empty($package->menu)) ? array() : json_decode($package->menu, TRUE),
+            'pricing' => $pricing,
+            'min_person' => $package->min_persons,
+            'max_person' => $package->max_persons,
+            'sitting_type' => $package->venue_type,
+            'contact_email' => (empty($package->contact_email)) ? $package->venue->contact_email : $package->contact_email,
+            'contact_phone' => (empty($package->contact_phone)) ? $package->venue->contact_phone : $package->contact_phone,
+            'additional_details' => (empty($package->additional_details)) ? array() : json_decode($package->additional_details, TRUE),
+            'timmings' => (empty($package->timmings)) ? json_decode($package->venue->timmings, TRUE) : json_decode($package->timmings, TRUE),
+            'sitting_type' => $package->venue_type,
+            'package_rating' => empty($package->rating) ? FALSE :  $package->rating,
+            'venue_name' => $package->venue->name,
+            'address' => $package->venue->address,
+            'gmap_link' => $package->venue->gmap_location,
+            'parking_available' => ($package->venue->parking_capacity > 0) ? TRUE : FALSE,
+            'venue_rating' => $package->venue->venue_rating,
+        );
+
+        $response_data = array(
+            'package_data' => $package_details
+        );
+
+        return new Response($response_data, 200);
     }
 }

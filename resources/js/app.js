@@ -1,5 +1,5 @@
 const bootstrap = require('bootstrap')
-
+window.bootstrap = bootstrap;
 window.$ = require('jquery');
 import 'datatables.net-dt'
 
@@ -127,5 +127,4 @@ $(document).ajaxError(function( event, response) {
     }
 });
 
-
-import "./common_functions";
+import './common_functions';
