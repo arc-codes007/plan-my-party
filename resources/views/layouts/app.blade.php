@@ -37,6 +37,7 @@
             @yield('content')
         </main>
     </div>
+@include('components.package_view_modal');
 
 </body>
 </html>

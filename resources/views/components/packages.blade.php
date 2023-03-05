@@ -5,13 +5,8 @@
 </div>
 
 <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
     <div class="carousel-inner" id="packages_carousel_items">
-
+        {{-- packages are dynamically loaded here through ajax --}}
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -81,7 +76,7 @@ $(document).ready(function()
                             {
                                 map_link = `<a href="${packages[package_index].gmap_link}" target="_BLANK"><i class="text-success fa-solid fa-map-location-dot"></i></a>`;
                             }
-                            package_html_str += `<div class="col-6">
+                            package_html_str += `<div class="col-6" onclick="toggle_package_view_modal(${packages[package_index].package_id},'{{ route('get_package_data') }}')">
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <div class="row">
