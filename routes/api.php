@@ -34,5 +34,6 @@ Route::middleware('auth:api')->post('/party_pref', [App\Http\Controllers\FormCon
 
 Route::middleware('auth:api')->get('/admin/stats', [App\Http\Controllers\AdminController::class, 'fetch_admindash_stats'])->name('fetch_admin_dash_stats');
 
+Route::middleware('auth:api')->get('/fetch-user-list', [App\Http\Controllers\UserController::class, 'fetch_user_list'])->name('fetch_user_list');
 
 

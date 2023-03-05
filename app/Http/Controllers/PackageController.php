@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\DB;
 
 class PackageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+    }
     
     public function package_form($package_id = false){
         return view('admin.package_form', ['package_id' => $package_id] );

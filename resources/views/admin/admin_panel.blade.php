@@ -15,8 +15,7 @@
                                 <h1 class="text-center"><span id="user_count">0</span> Users</h1>
                             </div>
                             <div class="d-flex justify-content-center">
-                                <div class="mx-1 text-center"><a href="" class="btn btn-outline-light">Add</a></div>
-                                <div class="mx-1 text-center"><a href="" class="btn btn-outline-light">List</a></div>
+                                <div class="mx-1 text-center"><a href="{{ route('user_list') }}" class="btn btn-outline-light">List</a></div>
                             </div>
                         </div>
                     </div>
