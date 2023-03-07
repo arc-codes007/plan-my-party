@@ -36,7 +36,7 @@ class UserController extends Controller
                 
             $actions = '';
             //yash page add here 
-            $actions .= '<a href="'.route('package_form',$user->id).'" class="btn btn-sm btn-info mx-2"><i class="fa-solid text-white fa-pen-to-square"></i></a>';
+            $actions .= '<a href="'.route('profile_admin_view',$user->id).'" class="btn btn-sm btn-info mx-2"><i class="fa-solid text-white fa-pen-to-square"></i></a>';
             $actions .= '<a href="#" class="btn btn-sm btn-warning mx-2"><i class="fa-solid fa-trash-can"></i></a>';
 
 
