@@ -28,7 +28,7 @@
                 </li>
                 @endif
                 @else
-                <a href="{{route('reco_form')}}" class="nav-item btn btn-danger text-white">Plan My Party!!</a>
+                <a href="#" class="nav-item btn btn-danger text-white">Plan My Party!!</a>
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         <i class="fa-regular fa-user fa-lg"></i> {{ Auth::user()->name }}
