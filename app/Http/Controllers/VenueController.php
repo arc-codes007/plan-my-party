@@ -219,7 +219,6 @@ class VenueController extends Controller
 
             $actions = '';
             $actions .= '<a href="'.route('venue_form',$venue->id).'" class="btn btn-sm btn-info mx-2"><i class="fa-solid text-white fa-pen-to-square"></i></a>';
-            $actions .= '<a href="#" class="btn btn-sm btn-success mx-2"><i class="fa-solid text-white fa-plus"></i></a>';
             $data['actions'] = $actions;
             $response_list[] = $data;
         }
