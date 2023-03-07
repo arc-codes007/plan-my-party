@@ -35,20 +35,3 @@ Route::get('/edit_user_profile', [App\Http\Controllers\ProfileController::class,
 
 Route::get('/reset_password', [App\Http\Controllers\ProfileController::class, 'reset_pass'])->name('reset_password');
 Route::post('/update_password', [App\Http\Controllers\ProfileController::class, 'update_password'])->name('update_password');
-
-Route::get('storage/{filename}', function ($filename)
-{
-    $path = storage_path('public/' . $filename);
-
-    if (!File::exists($path)) {
-        abort(404);
-    }
-
-    $file = File::get($path);
-    $type = File::mimeType($path);
-
-    $response = Response::make($file, 200);
-    $response->header("Content-Type", $type);
-
-    return $response;
-});
