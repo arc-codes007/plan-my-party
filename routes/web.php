@@ -28,7 +28,13 @@ Route::get('/package-list', [App\Http\Controllers\PackageController::class, 'pac
 Route::get('/reco_form', [App\Http\Controllers\FormController::class, 'reco_form'])->name('reco_form');
 Route::get('/user-list', [App\Http\Controllers\UserController::class, 'user_list'])->name('user_list');
 
+Route::get('/profile_admin_view/{id}', [App\Http\Controllers\ProfileController::class, 'profile_admin_view'])->name('profile_admin_view');
+Route::get('/profile_view', [App\Http\Controllers\ProfileController::class, 'profile_view'])->name('profile_view');
 
+Route::get('/edit_user_profile', [App\Http\Controllers\ProfileController::class, 'edit_user_profile'])->name('edit_user_profile');
+
+Route::get('/reset_password', [App\Http\Controllers\ProfileController::class, 'reset_pass'])->name('reset_password');
+Route::post('/update_password', [App\Http\Controllers\ProfileController::class, 'update_password'])->name('update_password');
 
 Route::get('storage/{filename}', function ($filename)
 {
