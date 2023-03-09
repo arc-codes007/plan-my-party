@@ -218,6 +218,7 @@ class VenueController extends Controller
             }
 
             $actions = '';
+            $actions .= '<a href="'.route('venue_details',$venue->id).'" class="btn btn-sm btn-info mx-2">view venue</a>';
             $actions .= '<a href="'.route('venue_form',$venue->id).'" class="btn btn-sm btn-info mx-2"><i class="fa-solid text-white fa-pen-to-square"></i></a>';
             $data['actions'] = $actions;
             $response_list[] = $data;
@@ -274,6 +275,68 @@ class VenueController extends Controller
                 'original_name' => $primary_picture->original_name,
             ),
             'secondary_pictures' => $secondary_pictures,
+        );
+
+
+        return new Response($venue_details, 200);
+
+    }
+
+    public function show_venue_details($venue_id = false)
+    {
+        return view('admin.venue_details', ['venue_id' => $venue_id]);
+    }
+
+    function fetch_venue_details_page(Request $request)
+    {
+        if( ! $request->venue_id)
+            return new Response(['redirect' => route('venue_list')], 402);
+
+        $venue_id = $request->venue_id;
+
+        $venue_rawdata = Venue::find($venue_id);
+        if(empty($venue_rawdata))
+        {
+            return new Response(['redirect' => route('venue_list')], 402);
+        }
+        $venue_rawdata = $venue_rawdata->getAttributes();
+
+        $primary_picture = Image::where(['entity_id' => $venue_id, 'belongs_to' => 'venue', 'type' => 'primary'])->first();
+
+        $secondary_picture_coll = Image::where(['entity_id' => $venue_id, 'belongs_to' => 'venue', 'type' => 'secondary'])->get();
+        $secondary_pictures = array();
+
+        if(!empty($secondary_picture_coll))
+        {
+            foreach($secondary_picture_coll as $file)
+            {
+                $secondary_pictures[] = array(
+                    'id' => $file->id,
+                    'original_name' => $file->original_name,
+                    'path' => asset($file->image_path),
+                );
+            }
+        }
+        
+        $venue_details = array(
+            'name' => $venue_rawdata['name'],
+            'type' => $venue_rawdata['type'],
+            'address' => $venue_rawdata['address'],
+            'gmap_location' => $venue_rawdata['gmap_location'],
+            'contact_email' => $venue_rawdata['contact_email'],
+            'contact_phone' => $venue_rawdata['contact_phone'],
+            'total_capacity' => $venue_rawdata['total_capacity'],
+            'parking_capacity' => $venue_rawdata['parking_capacity'],
+            'cuisines' => json_decode($venue_rawdata['cuisines'], TRUE),
+            'additional_features' => json_decode($venue_rawdata['additional_features'], TRUE),
+            'venue_rating' => $venue_rawdata['venue_rating'],
+            'timmings' => json_decode($venue_rawdata['timmings'], TRUE),
+            'primary_picture' => array(
+                'id' => $primary_picture->id,
+                'original_name' => $primary_picture->original_name,
+            ),
+            'secondary_pictures' => $secondary_pictures,
+            'image_src' => asset($primary_picture->image_path),
         );
 
 

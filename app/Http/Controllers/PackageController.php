@@ -290,4 +290,55 @@ class PackageController extends Controller
 
         return new Response($response_data, 200);
     }
+
+    // public function get_package_details(Request $request)
+    // {
+    //     $request->validate([
+    //         'package_id' => 'required'
+    //     ]);
+
+    //     $package_id = $request->package_id;
+
+
+    public function fetch_venue_package_page(Request $request)
+    {        
+                $request->validate([
+                    'venue_id' => 'required'
+                ]);
+                $venue_id = $request->venue_id;
+        $packages = Package::where('venue_id',$venue_id)->where('active',1)->orderBy('rating', 'desc')->limit(10)->get();
+        if(empty($packages))
+        {
+            return new Response(['errors' => 'No Package Found!'], 400);
+        }
+        {
+            $final_packages_data = array();
+
+            foreach($packages as $package)
+            {
+                $primary_picture = Image::where(['entity_id' => $package->id, 'belongs_to' => 'package', 'type' => 'primary'])->first();
+
+                $package_data = array(
+                    'package_id' => $package->id,
+                    'name' => $package->name,
+                    'image_src' => asset($primary_picture->image_path),
+                    'venue_name' => $package->venue->name,
+                    'address' => $package->venue->address,
+                    'gmap_link' => $package->venue->gmap_location,
+                    'rating' => $package->rating,
+                    'additional_features' => (empty($package->additional_details)) ? array() : json_decode($package->additional_details, TRUE),
+                    'parking_available' => ($package->venue->parking_capacity > 0) ? TRUE : FALSE
+                );
+
+                $final_packages_data[] = $package_data;
+            }
+
+            $response_data = array(
+                'packages' => $final_packages_data
+            );
+
+            return new Response($response_data, 200);
+        }
+    }
+
 }

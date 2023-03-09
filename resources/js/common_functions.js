@@ -26,16 +26,16 @@ toggle_package_view_modal = function(package_id, api_url)
         success: function(response) {
             let package_data = response.package_data;
 
-            $("#package_image").attr('src', package_data.image_src);
-            $("#package_name").html(package_data.name);
-            $("#venue_name").html(package_data.venue_name);
-            $("#venue_rating").html(package_data.venue_rating);
+            $("#pkg_modal_package_image").attr('src', package_data.image_src);
+            $("#pkg_modal_package_name").html(package_data.name);
+            $("#pkg_modal_venue_name").html(package_data.venue_name);
+            $("#pkg_modal_venue_rating").html(package_data.venue_rating);
             let address = package_data.address;
             if(package_data.gmap_link)
             {
                 address += ` <a href="${package_data.gmap_link}" data-bs-toggle="tooltip" title="Open in Google Maps" target="_BLANK"><i class="text-success fa-solid fa-map-location-dot"></i></a>`;
             }
-            $("#address").html(address);
+            $("#pkg_modal_address").html(address);
             
             let pricing = package_data.pricing;
             let pricing_str = '';
@@ -43,10 +43,10 @@ toggle_package_view_modal = function(package_id, api_url)
             {
                 pricing_str += `&#8377 ${pricing.cost}/- Per ${(pricing.amount > 1) ? pricing.amount+' Persons' : 'Person'}`;
             }
-            $("#pricing").html(pricing_str);
-            $("#min_persons").html(package_data.min_person);
-            $("#max_persons").html(package_data.max_person);
-            $("#sitting_type").html(package_data.sitting_type);
+            $("#pkg_modal_pricing").html(pricing_str);
+            $("#pkg_modal_min_persons").html(package_data.min_person);
+            $("#pkg_modal_max_persons").html(package_data.max_person);
+            $("#pkg_modal_sitting_type").html(package_data.sitting_type);
 
             let timming_info_str = '<div class="row">';            
             for(let day in package_data.timmings)
@@ -55,7 +55,7 @@ toggle_package_view_modal = function(package_id, api_url)
             }
             timming_info_str += '</div>';
 
-            $("#timming_info").attr("data-bs-content", timming_info_str);
+            $("#pkg_modal_timming_info").attr("data-bs-content", timming_info_str);
             initialize_all_tooltips_popovers();
             
             let features = '<div class="row">';
@@ -74,7 +74,7 @@ toggle_package_view_modal = function(package_id, api_url)
                 }
             }
             features += `</div>`;
-            $("#additional_feature").html(features);
+            $("#pkg_modal_additional_feature").html(features);
 
             let menu = package_data.menu;
             if(Object.keys(menu).length > 0)
@@ -90,8 +90,8 @@ toggle_package_view_modal = function(package_id, api_url)
                     }
                 }
 
-                $("#menu_content").html(menu_content_str);
-                $("#menu_area").show();
+                $("#pkg_modal_menu_content").html(menu_content_str);
+                $("#pkg_modal_menu_area").show();
             }
 
             var package_view_modal = new bootstrap.Modal(document.getElementById('package_view_modal'));
