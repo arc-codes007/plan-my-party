@@ -41,9 +41,6 @@
                             </div>
                         @endif
                     </div>
-                    <div class="d-grid gap-2 mt-2">
-                        <button role="button" class="btn btn-sm btn-danger text-white">Book Now!</button>
-                    </div>
                 </div>
             </div>
         </div>
