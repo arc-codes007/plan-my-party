@@ -572,6 +572,102 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+#wrapper {
+  padding-left: 0;
+  transition: all 0.5s ease;
+  position: relative;
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 250px;
+  width: 0;
+  height: 100%;
+  margin-left: -250px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: all 0.5s ease;
+  background-color: #FF495C;
+}
+
+
+.sidebar-nav {
+  position: absolute;
+  width: 250px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sidebar-nav > li {
+  text-indent: 10px;
+  line-height: 42px;
+}
+.sidebar-nav > li div {
+  display: block;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+}
+.sidebar-nav > li > div:hover,
+.sidebar-nav > li.active > div {
+  text-decoration: none;
+  background: #f8fafc;
+}
+
+#content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+  top: 100px;
+}
+
+
+@media (min-width: 992px) {
+  #wrapper {
+    padding-left: 250px;
+  }
+  
+  #sidebar-wrapper {
+    width: 250px;
+  }
+
+  #content-wrapper {
+    position: relative;
+    top: 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  #wrapper {
+    padding-left: 60px;
+  }
+
+  #sidebar-wrapper {
+    width: 60px;
+  }
+
+  #content-wrapper {
+    position: relative;
+    top: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  #wrapper {
+    padding-left: 0;
+  }
+
+  #sidebar-wrapper {
+    width: 0;
+  }
+
+  #content-wrapper {
+    position: relative;
+    top: 0;
+  }
+}
 /**
  * alertifyjs 1.13.1 http://alertifyjs.com
  * AlertifyJS is a javascript framework for developing pretty browser dialogs and notifications.

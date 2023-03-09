@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container mt-5">
     <form id="venue_form">
         @if (!empty($venue_id))
         <input type="hidden" name="venue_id" value="{{$venue_id}}">

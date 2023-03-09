@@ -33,7 +33,7 @@
 <body>
     <div>
         @include('components.navbar')
-        <main class="py-4">
+        <main class="pb-4" style="padding-top:3.5rem">
             @yield('content')
         </main>
     </div>

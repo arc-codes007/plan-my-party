@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container mt-5">
     <form id="package_form">
 
          @if (!empty($package_id))
@@ -27,12 +27,22 @@
                 </div>
                 <div class="col-md-4 col-sm-12">
                     <label class="form-label h5">Type</label>
-                    <input type="text" class="form-control" id="type" name="type" required>
+                    <select name="type" id="type" class="form-control" required>
+                        <option value=""></option>
+                        @foreach (config("pmp.package_types") as $type)
+                            <option value="{{$type}}">{{$type}}</option>                
+                        @endforeach
+                    </select>
                 </div>
                 
                 <div class="col-md-4 col-sm-12">
                     <label class="form-label h5">Venue Type</label>
-                    <input type="text" class="form-control" id="venue_type" name="venue_type" required>
+                    <select name="venue_type" id="venue_type" class="form-control" required>
+                        <option value=""></option>
+                        @foreach (config("pmp.venue_types") as $type)
+                            <option value="{{$type}}">{{$type}}</option>                
+                        @endforeach
+                    </select>
                 </div>   
 
                 <div class="col-md-4 col-sm-12">

@@ -34,3 +34,7 @@ Route::get('/edit_user_profile', [App\Http\Controllers\ProfileController::class,
 
 Route::get('/reset_password', [App\Http\Controllers\ProfileController::class, 'reset_pass'])->name('reset_password');
 Route::post('/update_password', [App\Http\Controllers\ProfileController::class, 'update_password'])->name('update_password');
+
+
+// Party Routes
+Route::get('/party/form', [App\Http\Controllers\PartyController::class, "party_form"])->name('main_party_form');

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
-@include('components.packages')
-
+<div class="mt-5">
+    @include('components.packages')
+</div>
 @endsection

@@ -18,7 +18,7 @@ class PackageController extends Controller
 
     function add_update_package_form(Request $request){
 
-            $request->validate([
+        $validations = array(
             'venue_id' => 'required',
             'name' => 'required',
             'type' => 'required',
@@ -29,7 +29,7 @@ class PackageController extends Controller
             'max_persons' => 'required|numeric' ,
             'venue_type' => 'required',
             'primary_picture' => 'required|image',
-        ]);  
+        );  
 
         $primary_pic_already_exists = FALSE;
         if(isset($request->package_id))
@@ -42,6 +42,7 @@ class PackageController extends Controller
             }
         }
 
+        $request->validate($validations);
     
         $post_data = $request->all(); 
 

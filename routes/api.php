@@ -37,3 +37,4 @@ Route::middleware('auth:api')->get('/admin/stats', [App\Http\Controllers\AdminCo
 Route::middleware('auth:api')->get('/fetch-user-list', [App\Http\Controllers\UserController::class, 'fetch_user_list'])->name('fetch_user_list');
 
 
+Route::middleware('auth:api')->get('/party/fetch-recommedations', [App\Http\Controllers\PartyController::class, 'fetch_party_recommedations'])->name('fetch_party_recommendations');

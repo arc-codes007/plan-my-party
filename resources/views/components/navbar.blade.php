@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
     <div class="container">
         <a class="navbar-brand text-primary" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
@@ -28,7 +28,7 @@
                 </li>
                 @endif
                 @else
-                <a href="#" class="nav-item btn btn-danger text-white">Plan My Party!!</a>
+                <a href="{{ route("main_party_form") }}" class="nav-item btn btn-danger text-white">Plan My Party!!</a>
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         <i class="fa-regular fa-user fa-lg"></i> {{ Auth::user()->name }}

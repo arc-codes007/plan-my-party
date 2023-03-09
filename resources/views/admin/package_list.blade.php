@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container mt-5">
     <div class="card">
         <div class="card-header display-6 bg-primary text-white">Package List<a href="{{route('package_form')}}" class="btn btn-default"><i class="fa-solid text-white fa-2xl fa-plus"></i></a></div>
         <div class="card-body">
