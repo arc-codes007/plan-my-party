@@ -89,6 +89,10 @@
                 </div>
             </div>
         </form>
+
+        <div class="mt-5">
+            Note: Please select any package or venue and click Book Now to proceed further!
+        </div>
     </div>
     <div class="col-5 border-start border-4 h-100">
         <div class="m-2">
