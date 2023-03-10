@@ -2,15 +2,20 @@
 
 @section('content')
 <div id="wrapper">
-    @if (!empty($venue_id))
     <input type="hidden" name="venue_id" value="{{$venue_id}}">
-    @endif
     <div id="content-wrapper">
 
         <aside id="sidebar-wrapper">
             <div class="image_with_bottom_shadow  text-center m-3" style="max-height: 18rem; overflow-y:hidden">
                 <img alt="img" class="img-fluid" id="venue_image1"/>                                
                 <div class="mt-3 h4 fw-bold"><span id="venue_name1"></span></div>                                
+            </div>
+            <div class="m-2 text-center d-grid">
+                @guest
+                    <a href="{{route('login')}}" class="btn btn-lg btn-success text-white">Book Now</a>          
+                @else
+                    <button role="button" onclick="create_party({{$venue_id}}, 'venue', '{{route('create_party')}}')" class="btn btn-lg btn-success text-white">Book Now</button>          
+                @endguest
             </div>
             <ul class="sidebar-nav" id="myTab" role="tablist">
                 <li class="active nav-item" id="details-tab" data-bs-toggle="tab" data-bs-target="#details">
