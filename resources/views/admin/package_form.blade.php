@@ -272,6 +272,7 @@
                     $("#save_btn").prop('disabled', false);
                 },
                 error: function(res_data) {
+                    $("#save_btn").prop('disabled', false);
                 }
             });
         @endif
