@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Package;
+use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -20,6 +21,7 @@ class CreatePartiesTable extends Migration
             $table->string('name');
             $table->foreignIdFor(Venue::class);
             $table->foreignIdFor(Package::class)->nullable();
+            $table->foreignIdFor(User::class)->nullable();
             $table->enum('type', ['standard', 'custom']);
             $table->string('status');
             $table->timestamp('date')->useCurrent();
