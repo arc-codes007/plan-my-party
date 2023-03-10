@@ -1,5 +1,4 @@
-<a href="{{route('venue_details',$id)}}" style="text-decoration: none; color:black">
-<div class="m-2">
+<div class="m-2" onclick="window.location.href = '{{route('venue_details',$id)}}'">
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -47,4 +46,3 @@
         </div>
     </div>
 </div>
-</a>
