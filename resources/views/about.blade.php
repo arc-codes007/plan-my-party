@@ -14,7 +14,8 @@
     <p class="fs-4">The recommendation that Plan my Party provides you is best by our end, and just for you to be double sure, you can also check the reviews that our previous customer have left for you for the same service.</p>
 
     <p class="fs-4">Plan my Party is a D2C (Direct to Consumer/Customer) solution for managing or planning an event.</p>
-    <hr>
-    <p class="text-center">Plan-my-Party | Designed and Developed by Utkarsh, Ritik, Yash, Pratik and Vaibhav</p>
+    
 </div>
+<hr>
+@include('components.footer')
 @endsection
