@@ -2,7 +2,7 @@
 
 @section('content')
 
-@if (count($user_parties) > 0)
+@if (isset($user_parties) &&  is_array($user_parties) && count($user_parties) > 0)
 <div class="container mt-5 p-2">
     <div class="h1 text-danger">Your Parties</div>
     <div class="row">
