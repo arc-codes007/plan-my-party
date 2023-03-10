@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <h1>Packages</h1>
+        <h1 class="text-danger">Packages</h1>
     </div>
 </div>
 

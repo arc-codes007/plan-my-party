@@ -532,6 +532,10 @@
 .select2-container--classic.select2-container--open .select2-dropdown {
   border-color: #5897fb; }
 
+a
+{
+  color: black !important;
+}
 
 .icon_6em
 {
@@ -625,7 +629,7 @@
 #content-wrapper {
   width: 100%;
   position: absolute;
-  padding: 15px;
+  padding: 0px 15px 15px 15px;
   top: 100px;
 }
 

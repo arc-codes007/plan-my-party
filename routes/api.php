@@ -29,8 +29,13 @@ Route::middleware('auth:api')->get('/fetch-package-details', [App\Http\Controlle
 Route::get('/package/all-packages', [App\Http\Controllers\PackageController::class, 'fetch_all_packages'])->name('fetch_all_packages_data');
 Route::get('/package/get-package_details', [App\Http\Controllers\PackageController::class, 'get_package_details'])->name('get_package_data');
 
+Route::get('/venues/all-venues', [App\Http\Controllers\VenueController::class, 'fetch_all_venues_data'])->name('fetch_all_venues_data');
+
 Route::middleware('auth:api')->get('/fetch_venues', [App\Http\Controllers\FormController::class, 'fetch_venues'])->name('fetch_venues');
 Route::middleware('auth:api')->post('/party_pref', [App\Http\Controllers\FormController::class, 'party_pref'])->name('party_pref');
+Route::middleware('auth:api')->post('/update_user', [App\Http\Controllers\ProfileController::class, 'update_user'])->name('update_user');
+Route::middleware('auth:api')->get('/fetch_user_detail', [App\Http\Controllers\ProfileController::class, 'fetch_user_detail'])->name('fetch_user_detail');
+
 
 Route::middleware('auth:api')->get('/admin/stats', [App\Http\Controllers\AdminController::class, 'fetch_admindash_stats'])->name('fetch_admin_dash_stats');
 

@@ -123,7 +123,7 @@ class PartyController extends Controller
                 'address' => $package->address,
                 'gmap_location' => $package->gmap_location,
                 'parking_available' => ($package->parking_capacity > 0)? TRUE: FALSE,
-                'additional_details' => empty($package->additional_details) ? null : json_decode($package->additional_details, TRUE),
+                'additional_details' => empty($package->additional_details) ? array() : json_decode($package->additional_details, TRUE),
             );
 
 
@@ -160,7 +160,7 @@ class PartyController extends Controller
                 'address' => $venue->address,
                 'gmap_location' => $venue->gmap_location,
                 'parking_available' => ($venue->parking_capacity > 0)? TRUE: FALSE,
-                'additional_features' => empty($venue->additional_features) ? null : json_decode($venue->additional_features, TRUE),
+                'additional_features' => empty($venue->additional_features) ? array() : json_decode($venue->additional_features, TRUE),
             );
 
             $venues_html[] = view("components.venue_card", $venue_data)->render();
@@ -205,6 +205,7 @@ class PartyController extends Controller
         $party_data = array(
             'venue_id' => $venue_id,
             'package_id' => $package_id,
+            'user_id' => Auth::user()->id,
             'type' => $type,
             'name' => $party_name,
             'status' => config('pmp.party_statuses.draft')

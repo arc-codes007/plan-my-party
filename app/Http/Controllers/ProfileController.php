@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Venue;
 use App\Models\Image;
 use App\Models\User;
+use Error;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -20,18 +21,6 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    public function profile_admin_view($id)
-    {
-        if (Auth::user()->is_admin == 1) {
-            $data['user_type'] = 'admin';
-            $user = User::where('id', $id)->first();
-            $data['user'] = $user;
-            return view('profile_admin_view', $data);
-        } else {
-            abort(401);
-        }
-    }
-
     public function profile_view()
     {
         return view('profile');
@@ -40,25 +29,25 @@ class ProfileController extends Controller
     public function reset_pass(Request $request)
     {
         $id = $request['user_id'];
-        print_r($id);
+        // print_r($id);
         return view('auth.passwords.reset');
     }
 
-    public function edit_user_profile()
-    {
-        return view('edit_user_profile');
-    }
+    // public function edit_user_profile()
+    // {
+    //     return view('edit_user_profile');
+    // }
 
     public function update_password(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'user_id' => 'required',
             'current_pass' => 'required',
             'password' => 'required | min:8 | string',
             'password_confirm' => 'required | min:8 | string',
         ]);
         $pass_data = array(
-            'user_id' => $request['id'],
+            'user_id' => $request['user_id'],
             'old_pass' => $request['current_pass'],
             'new_pass' => $request['password'],
             'confirm_pass' => $request['password_confirm'],
@@ -74,10 +63,45 @@ class ProfileController extends Controller
         }
         $data['user'] = $user;
         if ($user->save()) {
-            return  redirect()->route('profile_view');
+            // return  redirect()->route('profile_view');
+            return new Response(['redirect' => route('profile_view')], 200);
         } else {
-            return  redirect()->route('edit_user_profile');
+            return new Response(['redirect' => route('profile_view')], 402);
         }
+    }
+
+    public function delete_user(Request $request)
+    {
+        $request->validate([
+            'del_user_id' => 'required',
+            'delete_pass_confirm' => 'required | min:8 | string',
+        ]);
+        $pass_data = array(
+            'user_id' => $request['del_user_id'],
+            'pass_confirm' => $request['delete_pass_confirm'],
+        );
+        $user = User::find($pass_data['user_id']);
+        if (Hash::check($pass_data['pass_confirm'], $user['password'])) {
+            // $user->delete();
+            if ($user->delete()) {
+                Auth::logout();
+                return redirect(route('landing'));
+            }
+        } else {
+            return new Response(['errors' => ['Something went wrong']],400);
+        }
+    }
+
+    public function fetch_user_detail(Request $request)
+    {
+        $user_id = $request["user_id"];
+        $user_data = User::find($user_id);
+        $user_data = $user_data->getAttributes();
+        $user_details = array(
+            'email' => $user_data['email'],
+            'phone' => $user_data['phone'],
+        );
+        return new Response($user_details, 200);
     }
 
     public function update_user(Request $request)
@@ -93,17 +117,17 @@ class ProfileController extends Controller
             'email' => $request['email'],
             'phone' => $request['phone'],
         );
-        print_r($update_data);
+        // print_r($update_data);
 
 
         $user = User::find($update_data['id'])->get()->all();
         if (!empty($user)) {
             $users = User::where('id', $update_data['id'])->first();
             $users->update($update_data);
-            print_r("success");
+            // print_r("success");
             return new Response(['redirect' => route('profile_view')], 200);
         } else {
-            return new Response(['redirect' => route('edit_user_profile')], 402);
+            return new Response(['redirect' => route('profile_view')], 402);
         }
     }
 }

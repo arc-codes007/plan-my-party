@@ -8,4 +8,9 @@ return [
         'planned' => "Planned",
         'celebrated' => "Celebrated",
     ),
+    "party_status_class" => array(
+        'Draft' => 'bg-warning',
+        'Planned' => 'bg-primary',
+        'Celebrated' => 'bg-success',
+    )
 ];

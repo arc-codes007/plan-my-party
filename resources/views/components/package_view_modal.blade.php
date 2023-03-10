@@ -46,7 +46,7 @@
 <script>
   $(document).ready(function(){
     $("#pkg_modal_book_party").click(function(){
-        create_party($("#pkg_modal_book_party").attr('package_id'), 'package', "{{route('create_party')}}")
+        create_party($("#pkg_modal_book_party").attr('package_id'), 'package', "{{route('create_party')}}");
     });
   });
 </script>

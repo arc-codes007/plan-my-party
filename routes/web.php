@@ -26,8 +26,8 @@ Route::get('/venue-list', [App\Http\Controllers\VenueController::class, 'venue_l
 Route::get('/package-form/{package_id?}', [App\Http\Controllers\PackageController::class, 'package_form'])->name('package_form');
 Route::get('/package-list', [App\Http\Controllers\PackageController::class, 'package_list'])->name('package_list');
 Route::get('/user-list', [App\Http\Controllers\UserController::class, 'user_list'])->name('user_list');
+Route::get('/admin_delete_user/{user_id?}', [App\Http\Controllers\UserController::class, 'admin_delete_user'])->name('admin_delete_user');
 
-Route::get('/profile_admin_view/{id}', [App\Http\Controllers\ProfileController::class, 'profile_admin_view'])->name('profile_admin_view');
 Route::get('/profile_view', [App\Http\Controllers\ProfileController::class, 'profile_view'])->name('profile_view');
 
 Route::get('/edit_user_profile', [App\Http\Controllers\ProfileController::class, 'edit_user_profile'])->name('edit_user_profile');
@@ -40,6 +40,14 @@ Route::get('/venue-details/{venue_id?}', [App\Http\Controllers\VenueController::
 Route::get('/party/form', [App\Http\Controllers\PartyController::class, "party_form"])->name('main_party_form');
 Route::get('/party/form/{party_id?}', [App\Http\Controllers\PartyController::class, "party_form"])->name('party_planning');
 
+<<<<<<< HEAD
 //template route
 Route::get('/template-form/{template_id?}', [App\Http\Controllers\InviteTemplateController::class, 'template_form'])->name('template_form');
 Route::get('/template-list', [App\Http\Controllers\InviteTemplateController::class, 'template_list'])->name('template_list');
+=======
+Route::post('/delete_user', [App\Http\Controllers\ProfileController::class, 'delete_user'])->name('delete_user');
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+>>>>>>> e3bf93be2c6cb019d1db71bd0e57e9219903b68c
