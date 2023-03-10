@@ -40,14 +40,11 @@ Route::get('/venue-details/{venue_id?}', [App\Http\Controllers\VenueController::
 Route::get('/party/form', [App\Http\Controllers\PartyController::class, "party_form"])->name('main_party_form');
 Route::get('/party/form/{party_id?}', [App\Http\Controllers\PartyController::class, "party_form"])->name('party_planning');
 
-<<<<<<< HEAD
 //template route
 Route::get('/template-form/{template_id?}', [App\Http\Controllers\InviteTemplateController::class, 'template_form'])->name('template_form');
 Route::get('/template-list', [App\Http\Controllers\InviteTemplateController::class, 'template_list'])->name('template_list');
-=======
 Route::post('/delete_user', [App\Http\Controllers\ProfileController::class, 'delete_user'])->name('delete_user');
 
 Route::get('/about', function () {
     return view('about');
 })->name('about');
->>>>>>> e3bf93be2c6cb019d1db71bd0e57e9219903b68c
