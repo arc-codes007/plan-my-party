@@ -52,3 +52,5 @@ Route::middleware('auth:api')->post('/party/save-party-data', [App\Http\Controll
 Route::middleware('auth:api')->post('/add-update-template-form', [App\Http\Controllers\InviteTemplateController::class, 'add_update_template_form'])->name('add_update_template');
 Route::middleware('auth:api')->get('/fetch-template-list', [App\Http\Controllers\InviteTemplateController::class, 'fetch_template_list'])->name('fetch_template_list');
 Route::middleware('auth:api')->get('/fetch-template-details', [App\Http\Controllers\InviteTemplateController::class, 'fetch_template_details'])->name('fetch_template_details');
+
+Route::middleware('auth:api')->post('/invitation/create_update', [App\Http\Controllers\InvitationController::class, 'create_update_invitation'])->name('create_update_invitation');

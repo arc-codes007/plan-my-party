@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\invite_template;
 use App\Models\Image;
+use App\Models\Party;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +26,7 @@ class InviteTemplateController extends Controller
         $validations = array(
             'name' => 'required',
             'title' => 'required',
-            'content' => 'required',
+            'template_content' => 'required',
             'template_picture' => 'required|image',            
         );
 
@@ -46,7 +47,7 @@ class InviteTemplateController extends Controller
         $template_data = array(            
             'name' => $post_data['name'],
             'title' => $post_data['title'],
-            'content' => $post_data['content'],             
+            'content' => $post_data['template_content'],             
         );        
 
 
@@ -104,47 +105,55 @@ class InviteTemplateController extends Controller
 
     function fetch_template_details(Request $request)
     {
-        if( ! $request->template_id)
-            return new Response(['redirect' => route('template_list')], 402);
+        $request->validate([
+            'template_id' => 'required'
+        ]);
 
         $template_id = $request->template_id;
 
         $template_rawdata = invite_template::find($template_id);
-        if(empty($template_rawdata))
-        {
-            return new Response(['redirect' => route('template_list')], 402);
-        }
-        $template_rawdata = $template_rawdata->getAttributes();
-
-        // $primary_picture = Image::where(['entity_id' => $venue_id, 'belongs_to' => 'venue', 'type' => 'primary'])->first();
-
-        // $secondary_picture_coll = Image::where(['entity_id' => $venue_id, 'belongs_to' => 'venue', 'type' => 'secondary'])->get();
-        // $secondary_pictures = array();
-
-        // if(!empty($secondary_picture_coll))
-        // {
-        //     foreach($secondary_picture_coll as $file)
-        //     {
-        //         $secondary_pictures[] = array(
-        //             'id' => $file->id,
-        //             'original_name' => $file->original_name,
-        //         );
-        //     }
-        // }
         
         $template_details = array(
-            'name' => $template_rawdata['name'],
-            'title' => $template_rawdata['title'],
-            'content' => $template_rawdata['content'],
-            // 'primary_picture' => array(
-            //     'id' => $primary_picture->id,
-            //     'original_name' => $primary_picture->original_name,
-            // ),
-            // 'secondary_pictures' => $secondary_pictures,
+            'id' => $template_rawdata->id,
+            'name' => $template_rawdata->name,
+            'title' => $template_rawdata->title,
+            'content' => $template_rawdata->content,
         );
 
+        if(!empty($request->party_id))
+        {
+            $title = $template_rawdata->title;
+            $content = $template_rawdata->content;
 
-        return new Response($template_rawdata, 200);
+            $party = Party::find($request->party_id);
+
+            $title = str_replace('{party_name}', $party->name, $title);
+            $title = str_replace('{user_name}', Auth::user()->name, $title);
+            $title = str_replace('{venue_name}', $party->venue->name, $title);
+            $title = str_replace('{party_date}', date("d M Y", strtotime($party->date)), $title);
+
+            if(!empty($party->timming))
+            {
+                $title = str_replace('{party_start_time}', json_decode($party->timming)->from, $title);
+                $title = str_replace('{party_end_time}', json_decode($party->timming)->to, $title);
+            }
+
+            $content = str_replace('{party_name}', $party->name, $content);
+            $content = str_replace('{user_name}', Auth::user()->name, $content);
+            $content = str_replace('{venue_name}', $party->venue->name, $content);
+            $content = str_replace('{party_date}', date("d M Y", strtotime($party->date)), $content);
+
+            if(!empty($party->timming))
+            {
+                $content = str_replace('{party_start_time}', json_decode($party->timming)->from, $content);
+                $content = str_replace('{party_end_time}', json_decode($party->timming)->to, $content);
+            }
+
+            $template_details['title'] = $title;
+            $template_details['content'] = $content;
+        }
+
+        return new Response($template_details, 200);
 
     }
 

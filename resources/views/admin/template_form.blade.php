@@ -10,27 +10,37 @@
         <div class="card mb-5">
             <div class="card-body">
                 <div class="card-title display-5 text-center">Template Form</div>
-                <div class="row gap-4 justify-content-center">
-                    <div class="col-md-4 col-sm-12">
-                        <label class="form-label">Name</label>
-                        <input type="text" class="form-control" id="template_name" name="name" required>
-                    </div>
-                    <div class="col-md-4 col-sm-12">
-                        <label class="form-label">Title</label>
-                        <input type="text" class="form-control" id="template_title" name="title" required>
-                    </div>                    
-                    <div class="col-md-4 col-sm-12">
-                        <label class="form-label">Content</label>
-                        <textarea class="form-control" name="content" placeholder="Enter Content" id="template_content" required></textarea>
-                    </div>
-                    
-                    <div class="col-md-4 col-sm-12">                        
-                        <div class="mt-3">
-                            <label class="form-label">Template Picture</label>
-                            <input class="form-control" type="file" name="template_picture" id="template_picture" accept="image/png, image/jpeg">
-                            <div id="uploaded_template_picture" class="row mt-2"></div>
+                <div class="row gap-2 justify-content-center">
+                    <div class="col-6">
+                        <div class="mt-2">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" id="template_name" name="name" required>
+                        </div>
+                        <div class="mt-2">
+                            <label class="form-label">Title</label>
+                            <input type="text" class="form-control" id="template_title" name="title" required>
+                        </div>                    
+                        <div class="mt-2">
+                            <label class="form-label">Content</label>
+                            <textarea class="form-control tiny" name="content" placeholder="Enter Content" id="template_content"></textarea>
+                        </div>
+                        <div class="mt-2">                        
+                            <div class="mt-3">
+                                <label class="form-label">Template Picture</label>
+                                <input class="form-control" type="file" name="template_picture" id="template_picture" accept="image/png, image/jpeg">
+                                <div id="uploaded_template_picture" class="row mt-2"></div>
+                            </div>                        
                         </div>                        
-                    </div>                    
+                    </div>
+                    <div class="col-4 mt-4">
+                        <h5>You can use following variables to frame title and content :- </h5>
+                        <div>Party Name - {party_name}</div>
+                        <div>User Name - {user_name}</div>
+                        <div>Venue Name - {venue_name}</div>
+                        <div>Party Date - {party_date}</div>
+                        <div>Party Start Time - {party_start_time}</div>
+                        <div>Party End Time - {party_end_time}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,6 +85,8 @@ $(document).ready(function() {
             $("#save_btn").prop('disabled', true);
 
             let form_data = new FormData(document.getElementById("template_form"));
+
+            form_data.append("template_content", tinymce.get("template_content").getContent());
 
             $.ajax({
                 url: "{{ route('add_update_template') }}",

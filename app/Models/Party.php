@@ -15,4 +15,9 @@ class Party extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function venue()
+    {
+        return $this->belongsTo(Venue::class);
+    }
 }

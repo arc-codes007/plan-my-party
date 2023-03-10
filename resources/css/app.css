@@ -8,6 +8,11 @@ a
     font-size: 6em;
 }
 
+.bg-selected
+{
+  background-color: #B4D5FE !important;
+}
+
 .image_with_bottom_shadow {
   height: fit-content;
   position: relative;
@@ -37,6 +42,12 @@ a
 
 .menu_background { 
   background-image: url("/images/system/menu_background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.template_background
+{
   background-repeat: no-repeat;
   background-size: cover;
 }

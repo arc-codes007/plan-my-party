@@ -30,8 +30,15 @@
                         </tr>
                         <tr>
                             <td>
-                                <select class="form-control" name="party_timming['from']" data-width="100%">
-                                    <option value="12:00am">12:00 AM</option>
+                                @php
+                                    $timming_from = array();
+                                    if(!empty($party_data['timming']))
+                                    {
+                                        $timming_from[] = $party_data['timming']['from'];
+                                    }
+                                @endphp
+                                <select class="form-control" name="party_timming[from]" data-width="100%">
+                                    <option value="12:00 AM" {{in_array('12:00 AM',$timming_from) ? 'selected' : ''}}>12:00 AM</option>
                                     @for ($hour = 1; $hour < 12; $hour+=0.5) 
                                         @php
                                             $temp_hour = explode('.' , $hour);
@@ -45,10 +52,10 @@
                                                 $time_str .=  ':00';
                                             }
                                         @endphp
-                                        <option value="{{$time_str.'am'}}">{{$time_str.' AM'}}</option>
+                                        <option value="{{$time_str.' AM'}}" {{in_array($time_str.' AM',$timming_from) ? 'selected' : ''}}>{{$time_str.' AM'}}</option>
                                     @endfor
                                     
-                                    <option value="12:00pm">12:00 PM</option>
+                                    <option value="12:00 PM" {{in_array('12:00 PM',$timming_from) ? 'selected' : ''}}>12:00 PM</option>
                                     
                                     @for ($hour = 1; $hour < 12; $hour+=0.5) 
                                         @php
@@ -63,13 +70,20 @@
                                                 $time_str .=  ':00';
                                             }
                                         @endphp
-                                        <option value="{{$time_str.'pm'}}">{{$time_str.' PM'}}</option>
+                                        <option value="{{$time_str.' PM'}}" {{in_array($time_str.' PM',$timming_from) ? 'selected' : ''}}>{{$time_str.' PM'}}</option>
                                     @endfor
                                 </select>
                             </td>
                             <td>
-                                <select class="form-control" name="party_timming['to']" data-width="100%">
-                                    <option value="12:00am">12:00 AM</option>
+                                @php
+                                    $timming_to = array();
+                                    if(!empty($party_data['timming']))
+                                    {
+                                        $timming_to[] = $party_data['timming']['to'];
+                                    }
+                                @endphp
+                                <select class="form-control" name="party_timming[to]" data-width="100%">
+                                    <option value="12:00 AM" {{in_array($time_str.' AM',$timming_to) ? 'selected' : ''}}>12:00 AM</option>
                                     @for ($hour = 1; $hour < 12; $hour+=0.5) 
                                         @php
                                             $temp_hour = explode('.' , $hour);
@@ -83,10 +97,10 @@
                                                 $time_str .=  ':00';
                                             }
                                         @endphp
-                                        <option value="{{$time_str.'am'}}">{{$time_str.' AM'}}</option>
+                                        <option value="{{$time_str.' AM'}}" {{in_array($time_str.' AM',$timming_to) ? 'selected' : ''}}>{{$time_str.' AM'}}</option>
                                     @endfor
                                     
-                                    <option value="12:00pm">12:00 PM</option>
+                                    <option value="12:00 PM" {{in_array($time_str.' PM',$timming_to) ? 'selected' : ''}}>12:00 PM</option>
                                     
                                     @for ($hour = 1; $hour < 12; $hour+=0.5) 
                                         @php
@@ -101,7 +115,7 @@
                                                 $time_str .=  ':00';
                                             }
                                         @endphp
-                                        <option value="{{$time_str.'pm'}}">{{$time_str.' PM'}}</option>
+                                        <option value="{{$time_str.' PM'}}" {{in_array($time_str.' PM',$timming_to) ? 'selected' : ''}}>{{$time_str.' PM'}}</option>
                                     @endfor
                                 </select>
                             </td>
@@ -128,24 +142,33 @@
         </form>
     </div>
     <div class="col-6 d-flex p-5 justify-content-center align-items-center">
-        <div class="border border-dark border-2 row justify-content-center align-items-center" style="height : 70vh; width:70%">
-            <div class="text-center">
-                Invitation Not Created
-            </div> 
-            <div class="text-center">
-                <button role="button" class="btn btn-success text-white">Create Now!</button>
+        @if (empty($invitation_data))
+            <div class="border border-dark border-2 row justify-content-center align-items-center" style="height : 70vh; width:70%">
+                <div class="text-center">
+                    Invitation Not Created
+                </div> 
+                <div class="text-center">
+                    <button role="button" class="btn btn-success text-white" onclick="navigate_to(3)">Create Now!</button>
+                </div>
             </div>
+        @else
+        <div class="border border-dark border-2 row justify-content-center align-items-center template_background" id="party_invitation" style="height : 70vh; width:70%; background-image: url({{asset($invite_templates[$invitation_data['invite_template_id']]['image_path'])}})">
+            <div class="text-center h3" style="overflow:hidden">{!! $invitation_data['title'] !!}</div>
+            <div class="text-center h4" style="overflow:hidden">{!! $invitation_data['content'] !!}</div>
         </div>
+        @endif
     </div>
 </div>
 
 <script>
 $(document).ready(() => {
+    @if (isset($package_data))
     $('#party_person_count').change(function(){
         let cost = "{{$package_data['cost']}}";
 
         $("#party_total_cost").html(cost*$(this).val()+" /-");
     });
+    @endif
 
     $("#party_plan_form").submit(function(e){
         e.preventDefault();

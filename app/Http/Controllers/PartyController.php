@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
+use App\Models\Invitation;
+use App\Models\invite_template;
 use App\Models\Package;
 use App\Models\Party;
 use App\Models\Venue;
@@ -26,6 +28,14 @@ class PartyController extends Controller
         if($party_id)
         {
             $party_data = Party::find($party_id);
+            if(empty($party_data))
+            {
+                return abort(404);
+            }
+            if(!empty($party_data->timming))
+            {
+                $party_data->timming = json_decode($party_data->timming, TRUE);
+            }
 
             $data = array(
                 'party_data' => $party_data,
@@ -43,7 +53,27 @@ class PartyController extends Controller
                 $primary_picture = Image::where(['entity_id' => $party_data['venue_id'], 'belongs_to' => 'venue', 'type' => 'primary'])->first();
                 $data['party_image_src'] = asset($primary_picture->image_path);
             }
+
+            if(!empty($party_data->invitation_id))
+            {
+                $data['invitation_data'] = Invitation::find($party_data->invitation_id);
+            }
+
         }
+
+        $invite_templates = invite_template::get()->all();
+
+        if(!empty($invite_templates))
+        {
+            $invite_templates_arr = array();
+            foreach($invite_templates as $template)
+            {
+                $invite_templates_arr[$template->id] = $template->getAttributes();
+            }
+            
+            $data['invite_templates'] = $invite_templates_arr;
+        }
+
         return view("party.party_form", $data);
     }
 

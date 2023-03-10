@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Invitation;
 use App\Models\Package;
 use App\Models\User;
 use App\Models\Venue;
@@ -22,6 +23,7 @@ class CreatePartiesTable extends Migration
             $table->foreignIdFor(Venue::class);
             $table->foreignIdFor(Package::class)->nullable();
             $table->foreignIdFor(User::class)->nullable();
+            $table->foreignIdFor(Invitation::class)->nullable();
             $table->enum('type', ['standard', 'custom']);
             $table->string('status');
             $table->timestamp('date')->useCurrent();
