@@ -1,12 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="mt-5">
-    @include('components.packages')
-</div>
-
 <section>
-    <div class="container-fluid p-1 mb-2" style="background-image:linear-gradient(-45deg,#FA6573,#FE1D57); background-size: 100% 100%; margin-top: -1.1rem;">
+    <div class="container-fluid p-5 mb-2" style="background-image:linear-gradient(-45deg,#FA6573,#FE1D57); background-size: 100% 100%; margin-top: -1.1rem;">
         <div class="container py-3">
             <h1 class="text-center text-white">PLAN-my-PARTY</h1>
             <h5 class="text-center text-white">One stop destination for all your PARTIES <i class="fa-solid fa-champagne-glasses"></i></h5>
@@ -29,8 +25,10 @@
             <div>
                 <h4>About</h4>
                 <a href="#" class="text-black">Home</a><br>
-                <a href="#" class="text-black">About Us</a><br>
-                <a href="#" class="text-black">Contact US</a>
+                <a href="{{ route('about') }}" class="text-black">About Us</a><br>
+                <a href="mailto:info@pmp.in" class="text-primary text-semibold" style="text-decoration: none"><i class="fa-regular fa-envelope"></i> Write Us</a><br>
+                <a href="tel:+9876543210" class="text-primary text-semibold" style="text-decoration: none"><i class="fa-solid fa-phone"></i> Phone</a><br>
+                <!-- <a href="#" class="text-black">Contact US</a> -->
             </div>
             <div>
                 <h4>Quick Links</h4>
@@ -41,14 +39,14 @@
             </div>
             <div>
                 <h4>Socials</h4>
-                <a href="#" class="text-primary text-semibold" style="text-decoration: none"><i class="fa-brands fa-facebook-f fa-lg"></i> Facebook</a><br>
-                <a href="#" class="text-danger text-semibold" style="text-decoration: none"><i class="fa-brands fa-instagram fa-lg"></i> Instagram</a><br>
-                <a href="#" class="text-primary text-semibold" style="text-decoration: none"><i class="fa-brands fa-linkedin-in fa-lg"></i> Linked In</a><br>
+                <a href="#" class="text-primary fw-bold" style="text-decoration: none"><i class="fa-brands fa-facebook-f fa-lg"></i> Facebook</a><br>
+                <a href="#" class="text-danger fw-bold" style="text-decoration: none"><i class="fa-brands fa-instagram fa-lg"></i> Instagram</a><br>
+                <a href="#" class="text-primary fw-bold" style="text-decoration: none"><i class="fa-brands fa-linkedin-in fa-lg"></i> Linked In</a><br>
             </div>
         </div>
 
         <hr>
-        <p class="text-center">Plan-my-Party | Designed and Developed by Utkarsh, Yash, Ritik, Pratik and Vaibhav</p>
+        <p class="text-center">Plan-my-Party | Designed and Developed by Utkarsh, Ritik, Yash, Pratik and Vaibhav</p>
     </div>
 </section>
 

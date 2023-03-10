@@ -41,3 +41,7 @@ Route::get('/party/form', [App\Http\Controllers\PartyController::class, "party_f
 Route::get('/party/form/{party_id?}', [App\Http\Controllers\PartyController::class, "party_form"])->name('party_planning');
 
 Route::post('/delete_user', [App\Http\Controllers\ProfileController::class, 'delete_user'])->name('delete_user');
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
