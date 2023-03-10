@@ -4,7 +4,7 @@
 
 @if (count($user_parties) > 0)
 <div class="container mt-5 p-2">
-    <div class="h1">Your Parties</div>
+    <div class="h1 text-danger">Your Parties</div>
     <div class="row">
         @foreach ($user_parties as $party)
             <div class="my-2 col-lg-3 col-md-4 col-sm-6">
@@ -38,11 +38,5 @@
 @endif
 @include('components.venues')
 @include('components.packages')
-
-<div class="container p-2">
-    <div class="row">
-        <h1 class="text-danger">My Parties</h1>
-    </div>
-</div>
 
 @endsection
