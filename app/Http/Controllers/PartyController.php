@@ -44,7 +44,6 @@ class PartyController extends Controller
                 $data['party_image_src'] = asset($primary_picture->image_path);
             }
         }
-
         return view("party.party_form", $data);
     }
 
@@ -227,4 +226,41 @@ class PartyController extends Controller
             return new Response(['errors' => ['Something went wrong']], 400);
         }
     }
+
+    public function save_party_data(Request $request)
+    {
+        $request->validate([
+            'party_id' => 'required',
+            'party_name' => 'required',
+            'party_date' => 'required',
+        ]);
+
+        $request_data = $request->all();
+
+        $party = Party::find($request_data['party_id']);
+
+        $party_data = array(
+            'name' => $request_data['party_name'],
+            'date' => date('Y-m-d H:i:s' ,strtotime($request_data['party_date']))
+        );
+
+        if(!empty($request_data['party_person_count']))
+        {
+            $party_data['person_count'] = $request_data['party_person_count'];
+        }
+
+        if(!empty($request_data['party_timming']))
+        {
+            $party_data['timming'] = json_encode($request_data['party_timming']);
+        }
+
+        if($party->update($party_data))
+        {
+            return new Response(['message' => "Party Saved Successfully!"], 200);
+        }
+        else
+        {
+            return new Response(['errors' => ['Something went wrong']], 400);
+        }
+    } 
 }

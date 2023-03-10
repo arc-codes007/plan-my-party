@@ -10,9 +10,11 @@
                 @include("party.steps.step_1")            
             @endif
         </div>
-        <div id="step_2_planning_content">
-            @include("party.steps.step_2")            
-        </div>
+        @if (!empty($party_data))    
+            <div id="step_2_planning_content">
+                @include("party.steps.step_2")            
+            </div>
+        @endif
     </section>
 </div>
 
