@@ -1,6 +1,6 @@
 <div class="container p-2">
     <div class="row">
-        <h1>Venues</h1>
+        <h1 class="text-danger">Venues</h1>
     </div>
 </div>
 
@@ -9,61 +9,52 @@
         {{-- venues are dynamically loaded here through ajax --}}
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
     </button>
 </div>
 
 <script>
-
-$(document).ready(function()
-{
-    $.ajax({
+    $(document).ready(function() {
+        $.ajax({
             url: "{{ route('fetch_all_venues_data') }}",
             type: "GET",
             success: function(response) {
                 let venues = response.venues;
-                let item_count = Math.ceil(venues.length/2);
+                let item_count = Math.ceil(venues.length / 2);
                 let venue_index = 0;
 
                 let venue_html_str = '';
 
-                for(let i = 0; i < item_count; ++i)
-                {
-                    venue_html_str += `<div class="carousel-item ${(i == 0) ? 'active' : ''}" data-bs-interval="10000">`
-                                        + `<div class="container pb-5">`
-                                            + `<div class="row">`;
-                    
-                    for(let j = 0; j < 2; ++j)
-                    {
-                        if(venues[venue_index])
-                        {
+                for (let i = 0; i < item_count; ++i) {
+                    venue_html_str += `<div class="carousel-item ${(i == 0) ? 'active' : ''}" data-bs-interval="10000">` +
+                        `<div class="container pb-5">` +
+                        `<div class="row">`;
+
+                    for (let j = 0; j < 2; ++j) {
+                        if (venues[venue_index]) {
                             let features = '<div class="row">';
                             let feature_count = 0;
 
                             let total_features = 4;
                             let additional_features = venues[venue_index].additional_features;
-                            if(additional_features.length < 4)
-                            {
+                            if (additional_features.length < 4) {
                                 total_features = additional_features.length;
                             }
-                            
-                            if(venues[venue_index].parking_available)
-                            {
+
+                            if (venues[venue_index].parking_available) {
                                 features += `<div class="col-6"><i class="text-warning fa-solid fa-square-parking"></i> Parking Available</div>`;
                                 feature_count = 1;
                                 total_features += 1;
                             }
 
-                            if(additional_features.length > 0)
-                            {
+                            if (additional_features.length > 0) {
                                 let additional_features_index = 0;
-                                while(feature_count < total_features)
-                                {
+                                while (feature_count < total_features) {
                                     features += `<div class="col-6"><i class="text-warning fa-solid fa-bolt"></i> ${additional_features[additional_features_index]}</div>`;
                                     additional_features_index++;
                                     feature_count++;
@@ -72,11 +63,10 @@ $(document).ready(function()
                             features += `</div>`;
 
                             let map_link = '';
-                            if(venues[venue_index].gmap_link)
-                            {
+                            if (venues[venue_index].gmap_link) {
                                 map_link = `<a href="${venues[venue_index].gmap_link}" target="_BLANK"><i class="text-success fa-solid fa-map-location-dot"></i></a>`;
                             }
-                            venue_html_str += `<div class="col-6" onclick="">
+                            venue_html_str += `<div class="col-6">
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <div class="row">
@@ -100,14 +90,12 @@ $(document).ready(function()
                     }
 
                     venue_html_str += `</div></div></div>`;
-                    
+
                 }
 
                 $("#venues_carousel_items").html(venue_html_str);
             },
-            error: function(res_data) {
-            }
+            error: function(res_data) {}
         });
-});
-
+    });
 </script>
