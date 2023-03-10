@@ -12,22 +12,24 @@ use Illuminate\Support\Facades\Storage;
 
 class VenueController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('admin');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    //     $this->middleware('admin');
+    // }
     
     public function venue_form($venue_id = false)
     {
+        $this->middleware('auth');
+        $this->middleware('admin');
         return view('admin.venue_form', ['venue_id' => $venue_id]);
     }
 
 
     public function add_update_venue_form(Request $request)
     {
-
-
+        $this->middleware('auth');
+        $this->middleware('admin');
         $validations = array(
             'name' => 'required',
             'type' => 'required',
@@ -161,6 +163,8 @@ class VenueController extends Controller
 
     public function delete_image(Request $request)
     {
+        $this->middleware('auth');
+        $this->middleware('admin');
 
         $request->validate([
             'image_id' => 'required',
@@ -192,11 +196,15 @@ class VenueController extends Controller
 
     public function venue_list()
     {
+        $this->middleware('auth');
+        $this->middleware('admin');
         return view('admin.venue_list');
     }
 
     public function fetch_venue_list()
     {
+        $this->middleware('auth');
+        $this->middleware('admin');
         $response_list = array();
         foreach(Venue::all() as $venue)
         {
@@ -228,6 +236,8 @@ class VenueController extends Controller
 
     function fetch_venue_details(Request $request)
     {
+        $this->middleware('auth');
+        $this->middleware('admin');
         if( ! $request->venue_id)
             return new Response(['redirect' => route('venue_list')], 402);
 
@@ -340,6 +350,46 @@ class VenueController extends Controller
 
 
         return new Response($venue_details, 200);
+    }
+
+    public function fetch_all_venues_data(){
+
+        $venues = Venue::orderBy('venue_rating', 'desc')->limit(10)->get();
+        if(empty($venues))
+        {
+            return new Response(['errors' => 'No Venue Found!'], 400);
+        }
+        {
+            $final_venues_data = array();
+
+            foreach($venues as $venue)
+            {
+                $primary_picture = Image::where(['entity_id' => $venue->id, 'belongs_to' => 'venue', 'type' => 'primary'])->first();
+
+                $venue_data = array(
+                    'venue_id' => $venue->id,
+                    'type' => $venue->type,
+                    'name' => $venue->name,
+                    'image_src' => asset($primary_picture->image_path),
+                    'cuisine' => $venue->cuisines,
+                    'address' => $venue->address,
+                    'gmap_link' => $venue->gmap_location,
+                    'rating' => $venue->venue_rating,
+                    'additional_features' => (empty($venue->additional_features)) ? array() : json_decode($venue->additional_features, TRUE),
+                    'parking_available' => ($venue->parking_capacity > 0) ? TRUE : FALSE
+                );
+
+                $final_venues_data[] = $venue_data;
+            }
+
+            $response_data = array(
+                'venues' => $final_venues_data
+            );
+            // print_r($response_data);
+            // exit();
+
+            return new Response($response_data, 200);
+        }
 
     }
 }
