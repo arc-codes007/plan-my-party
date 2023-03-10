@@ -40,3 +40,6 @@ Route::get('/venue-details/{venue_id?}', [App\Http\Controllers\VenueController::
 Route::get('/party/form', [App\Http\Controllers\PartyController::class, "party_form"])->name('main_party_form');
 Route::get('/party/form/{party_id?}', [App\Http\Controllers\PartyController::class, "party_form"])->name('party_planning');
 
+//template route
+Route::get('/template-form/{template_id?}', [App\Http\Controllers\InviteTemplateController::class, 'template_form'])->name('template_form');
+Route::get('/template-list', [App\Http\Controllers\InviteTemplateController::class, 'template_list'])->name('template_list');

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class invite_template extends Model
 {
     use HasFactory;
+    protected $guarded = ['id'];
 }
