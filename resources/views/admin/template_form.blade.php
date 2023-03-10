@@ -13,15 +13,15 @@
                 <div class="row gap-4 justify-content-center">
                     <div class="col-md-4 col-sm-12">
                         <label class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="template_name" name="name" required>
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <label class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" name="title" required>
+                        <input type="text" class="form-control" id="template_title" name="title" required>
                     </div>                    
                     <div class="col-md-4 col-sm-12">
                         <label class="form-label">Content</label>
-                        <textarea class="form-control" name="content" placeholder="Enter Content" id="content" required></textarea>
+                        <textarea class="form-control" name="content" placeholder="Enter Content" id="template_content" required></textarea>
                     </div>
                     
                     <div class="col-md-4 col-sm-12">                        
@@ -57,12 +57,16 @@ $(document).ready(function() {
                     template_id
             },
             success: function(res_data) {
-                let template_data=res_data;
-                $("#name").html(template_data.name);
-                $("#title").html(template_data.title);
-                $("#content").html(template_data.content);                               
+                let template_data = res_data;
+                $("#template_name").val(template_data.name);
+                $("#template_title").val(template_data.title);
+                $("#template_content").val(template_data.content);                               
+
+                $("#save_btn").prop('disabled', false);
             },
-            error: function(res_data) {}
+            error: function(res_data) {
+                $("#save_btn").prop('disabled', false);
+            }
     });
 @endif  
 
@@ -91,120 +95,4 @@ $(document).ready(function() {
 
 </script>
 
-
-
-{{-- 
-    <script>
-
- $(document).ready(function() {
-
-        @if(!empty($venue_id))
-
-        let venue_id = "{{$venue_id}}";
-        $("#save_btn").prop('disabled', true);
-        $.ajax({
-            url: "{{ route('fetch_venue_details') }}",
-            type: "GET",
-            data: {
-                venue_id
-            },
-            success: function(res_data) {
-                for (let key in res_data) {
-                    if (key == 'timmings') {
-                        for (let day in res_data.timmings) {
-                            $('#' + day).prop("checked", true);
-                            $('.' + day + 'time').prop("disabled", false);
-                            $('#' + day + '_from').val(res_data.timmings[day]['from']).trigger('change');
-                            $('#' + day + '_to').val(res_data.timmings[day]['to']).trigger('change');
-                        }
-                    } else if (['cuisines', 'additional_features'].includes(key)) {
-                        if (res_data[key]) {
-                            $('#' + key + ' option').each(function() {
-                                let val = $(this).val();
-                                if (res_data[key].includes(val)) {
-                                    $(this).prop('selected', true);
-                                    delete res_data[key][val];
-                                }
-                            });
-                        }
-
-                        for (let remaining_val in res_data[key]) {
-                            $('#' + key).append(`<option selected value="${res_data[key][remaining_val]}">${res_data[key][remaining_val]}</option>`);
-                        }
-                        $('#' + key).trigger('change')
-                    } else if (key == 'primary_picture') {
-                        let append_html = `<div id="append_primary" class="col-10">${res_data.primary_picture.original_name}</div><div class="col-2 text-end"><button role="button" onclick="delete_file(event,${res_data.primary_picture.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
-                        console.log("id"+res_data.primary_picture.id);
-
-                        $('#uploaded_primary_picture').html(append_html);
-                    } else if (key == 'secondary_pictures') {
-                        if (res_data.secondary_pictures)
-
-                            var append_html = '';
-                        for (let sec_file of res_data.secondary_pictures) {
-                            append_html += `<div class="mt-1 col-10">${sec_file.original_name}</div><div class="mt-1 col-2 text-end"><button role="button" onclick="delete_file(event,${sec_file.id})" class="btn btn-sm btn-warning"><i class="fa-solid fa-trash-can"></i></div>`;
-                        }
-
-                        $('#uploaded_secondary_pictures').html(append_html);
-
-                    } else {
-                        $('#' + key).val(res_data[key]);
-                    }
-                }
-                $("#save_btn").prop('disabled', false);
-            },
-            error: function(res_data) {}
-        });
-        @endif
-
-
-        $('#venue_form').submit(function(e) {
-            e.preventDefault();
-            $("#save_btn").prop('disabled', true);
-
-            let form_data = new FormData(document.getElementById("venue_form"));
-
-            $.ajax({
-                url: "{{ route('add_update_venue') }}",
-                type: "POST",
-                data: form_data,
-                processData: false,
-                contentType: false,
-                success: function(res_data) {
-                    $("#save_btn").prop('disabled', false);
-                },
-                error: function(res_data) {
-                    $("#save_btn").prop('disabled', false);
-                }
-            });
-
-        });
-    });
-
-    function enable_disable_time(day) {
-        if ($('#' + day).is(":checked")) {
-            $('.' + day + 'time').prop('disabled', false);
-        } else {
-            $('.' + day + 'time').prop('disabled', true);
-        }
-    }
-
-    function delete_file(e,image_id){
-        e.preventDefault();
-        $.ajax({
-            url: "{{route('delete_image')}}",
-            type: "POST",
-            data: {image_id},
-            success: function(res_data) 
-            {
-                $(e.target).parent().parent().remove();
-                alertify.alert('Success', res_data.responseJSON.message);
-            },
-            error: function(res_data) {
-                alertify.alert('Error', res_data.responseJSON.error);
-            }
-        });
-    }
-</script>
- --}}
 @endsection
