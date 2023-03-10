@@ -89,7 +89,7 @@
 #content-wrapper {
   width: 100%;
   position: absolute;
-  padding: 15px;
+  padding: 0px 15px 15px 15px;
   top: 100px;
 }
 

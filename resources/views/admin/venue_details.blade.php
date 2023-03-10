@@ -1,40 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="container">
+<div id="wrapper">
     @if (!empty($venue_id))
     <input type="hidden" name="venue_id" value="{{$venue_id}}">
     @endif
+    <div id="content-wrapper">
 
-    <div class="row">
-        <div class="col-2 bg-danger" style="overflow-y: hidden">
-            <div class="vh-100">
-                <div id="myTab" role="tablist">
-                    <br>
-                    <div class="image_with_bottom_shadow w-100 text-center" style="max-height: 18rem; overflow-y:hidden">
-                        <img alt="img" class="img-fluid" id="venue_image1"/>                                
-                        <div class="mt-3 h4 fw-bold"><span id="venue_name1"></span></div>                                
-                    </div>
-                    
-                    
-                    <div class="nav-item active h3 p-3 my-2 text-center user-select-none" id="details-tab" data-bs-toggle="tab" data-bs-target="#details">
-                        Details            
-                    </div>
-                    <div class="nav-item h3 p-3 my-2 text-center user-select-none" id="photos-tab" data-bs-toggle="tab" data-bs-target="#photos">
-                        Photos            
-                    </div>
-                    <div class="nav-item h3 p-3 my-2 text-center user-select-none" id="packages-tab" data-bs-toggle="tab" data-bs-target="#packages">
-                        Packages            
-                    </div>
-                    <div class="nav-item h3 p-3 my-2 text-center user-select-none" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews">
-                        Reviews            
-                    </div>
-                </div>
+        <aside id="sidebar-wrapper">
+            <div class="image_with_bottom_shadow  text-center m-3" style="max-height: 18rem; overflow-y:hidden">
+                <img alt="img" class="img-fluid" id="venue_image1"/>                                
+                <div class="mt-3 h4 fw-bold"><span id="venue_name1"></span></div>                                
             </div>
-        </div>
+            <ul class="sidebar-nav" id="myTab" role="tablist">
+                <li class="active nav-item" id="details-tab" data-bs-toggle="tab" data-bs-target="#details">
+                    <div class="p-3 text-center text-nowrap">Details</div>
+                </li>
+                <li class="nav-item" id="photos-tab" data-bs-toggle="tab" data-bs-target="#photos">
+                    <div class="p-3 text-center text-nowrap">Photos</div>
+                </li>
+                <li class="nav-item" id="packages-tab" data-bs-toggle="tab" data-bs-target="#packages">
+                    <div class="p-3 text-center text-nowrap">Packages</div>
+                </li>
+                <li class="nav-item" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews">
+                    <div class="p-3 text-center text-nowrap">Reviews</div>
+                </li>
+            </ul>
+        </aside>
 
-        <div class="col-10">
+        <section id="content-wrapper">
             <div class="tab-content" id="myTabContent">
 
                 <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="home-tab">
@@ -83,12 +77,8 @@
 
                 <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="contact-tab">Reviews</div>
             </div>
-        </div>
+        </section>
     </div>
-
-
- 
-
 </div>
 <script>
 

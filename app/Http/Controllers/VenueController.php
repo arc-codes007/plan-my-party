@@ -202,7 +202,7 @@ class VenueController extends Controller
         {
             $data = array(
                 'id' => $venue->id,
-                'name' => $venue->name,
+                'name' => '<a href="'.route('venue_details',$venue->id).'">'.$venue->name.'</a>',
                 'type' => $venue->type,
                 'email' => $venue->contact_email,
                 'phone' => $venue->contact_phone,
@@ -218,7 +218,6 @@ class VenueController extends Controller
             }
 
             $actions = '';
-            $actions .= '<a href="'.route('venue_details',$venue->id).'" class="btn btn-sm btn-info mx-2">view venue</a>';
             $actions .= '<a href="'.route('venue_form',$venue->id).'" class="btn btn-sm btn-info mx-2"><i class="fa-solid text-white fa-pen-to-square"></i></a>';
             $data['actions'] = $actions;
             $response_list[] = $data;

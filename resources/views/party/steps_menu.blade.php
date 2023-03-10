@@ -17,4 +17,4 @@
         <div class="p-3 text-center text-nowrap">Step 4: Maintain Guests</div>
       </li>
     </ul>
-  </aside>
+</aside>

@@ -1,3 +1,4 @@
+<a href="{{route('venue_details',$id)}}" style="text-decoration: none; color:black">
 <div class="m-2">
     <div class="card">
         <div class="card-body">
@@ -46,3 +47,4 @@
         </div>
     </div>
 </div>
+</a>
