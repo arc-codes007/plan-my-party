@@ -26,6 +26,7 @@ toggle_package_view_modal = function(package_id, api_url)
         success: function(response) {
             let package_data = response.package_data;
 
+            $("#pkg_modal_book_party").attr('package_id',package_id);
             $("#pkg_modal_package_image").attr('src', package_data.image_src);
             $("#pkg_modal_package_name").html(package_data.name);
             $("#pkg_modal_venue_name").html(package_data.venue_name);
@@ -100,6 +101,27 @@ toggle_package_view_modal = function(package_id, api_url)
         error: function(res_data) {
         }
     });
+}
 
+create_party = function(entity_id, belongs_to, route)
+{
+    let params = {
+        entity_id,
+        belongs_to
+    };
 
+    if($("#person_count").val())
+    {
+        params['person_count'] = $("#person_count").val();
+    }
+
+    $.ajax({
+        url: route,
+        type: "POST",
+        data: params,
+        success: function(response) {
+        },
+        error: function(res_data) {
+        }
+    });
 }

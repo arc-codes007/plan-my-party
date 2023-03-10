@@ -616,6 +616,12 @@
   background: #f8fafc;
 }
 
+.sidebar-nav > .locked > div:hover
+{
+  text-decoration: none;
+  background: transparent;
+}
+
 #content-wrapper {
   width: 100%;
   position: absolute;

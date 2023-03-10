@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Image;
 use App\Models\Package;
+use App\Models\Party;
+use App\Models\Venue;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PartyController extends Controller
@@ -17,10 +20,32 @@ class PartyController extends Controller
         $this->middleware('auth');
     }
 
-    public function party_form()
+    public function party_form($party_id = FALSE)
     {
-        
-        return view("party.party_form");
+        $data = array();
+        if($party_id)
+        {
+            $party_data = Party::find($party_id);
+
+            $data = array(
+                'party_data' => $party_data,
+                'venue_data' => Venue::find($party_data['venue_id']),    
+            );
+
+            if($party_data['type'] == 'standard')
+            {
+                $data['package_data'] = Package::find($party_data['package_id']);
+                $primary_picture = Image::where(['entity_id' => $party_data['package_id'], 'belongs_to' => 'package', 'type' => 'primary'])->first();
+                $data['party_image_src'] = asset($primary_picture->image_path);
+            }
+            else
+            {
+                $primary_picture = Image::where(['entity_id' => $party_data['venue_id'], 'belongs_to' => 'venue', 'type' => 'primary'])->first();
+                $data['party_image_src'] = asset($primary_picture->image_path);
+            }
+        }
+
+        return view("party.party_form", $data);
     }
 
     public function fetch_party_recommedations(Request $request)
@@ -148,5 +173,57 @@ class PartyController extends Controller
         );
         
         return new Response($response_data, 200);
+    }
+
+    public function create_party(Request $request)
+    {
+        $request->validate([
+            'entity_id' => 'required',
+            'belongs_to' => 'required'
+        ]);
+
+        $request_data = $request->all();
+
+        $user_name = Auth::user()->name;
+
+        if($request_data['belongs_to'] == 'package')
+        {
+            $package = Package::find($request['entity_id']);
+            $package_id = $request['entity_id'];
+            $venue_id = $package->venue_id;
+            $party_name = $user_name."'s ".$package->name;
+            $type = 'standard';
+        }
+        else if($request_data['belongs_to'] == 'venue')
+        {
+            $package_id = null;
+            $venue_id = $request['entity_id'];
+            $party_name = $user_name."'s Party at ".Venue::find($venue_id)->name;
+            $type = 'custom';
+        }
+        
+        $party_data = array(
+            'venue_id' => $venue_id,
+            'package_id' => $package_id,
+            'type' => $type,
+            'name' => $party_name,
+            'status' => config('pmp.party_statuses.draft')
+        );
+
+        if(isset($request_data['person_count']))
+        {
+            $party_data['person_count'] = $request_data['person_count'];
+        }
+
+        $party_id = Party::create($party_data);
+
+        if($party_id)
+        {
+            return new Response(['redirect' => route('party_planning', $party_id)], 402);
+        }
+        else
+        {
+            return new Response(['errors' => ['Something went wrong']], 400);
+        }
     }
 }

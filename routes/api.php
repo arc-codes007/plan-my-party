@@ -41,3 +41,4 @@ Route::middleware('auth:api')->get('/fetch-venue-package-page', [App\Http\Contro
 
 
 Route::middleware('auth:api')->get('/party/fetch-recommedations', [App\Http\Controllers\PartyController::class, 'fetch_party_recommedations'])->name('fetch_party_recommendations');
+Route::middleware('auth:api')->post('/party/create-party', [App\Http\Controllers\PartyController::class, 'create_party'])->name('create_party');

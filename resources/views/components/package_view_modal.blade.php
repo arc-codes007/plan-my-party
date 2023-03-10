@@ -33,8 +33,20 @@
             </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-lg btn-primary text-white">Book Now</button>
+          @guest
+            <a href="{{route('login')}}" class="btn btn-lg btn-primary text-white">Book Now</a>          
+          @else
+            <a href="javascript:void()" id="pkg_modal_book_party" package_id="" class="btn btn-lg btn-primary text-white">Book Now</a>          
+          @endguest
         </div>
       </div>
     </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $("#pkg_modal_book_party").click(function(){
+        create_party($("#pkg_modal_book_party").attr('package_id'), 'package', "{{route('create_party')}}")
+    });
+  });
+</script>

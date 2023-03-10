@@ -38,3 +38,5 @@ Route::post('/update_password', [App\Http\Controllers\ProfileController::class, 
 Route::get('/venue-details/{venue_id?}', [App\Http\Controllers\VenueController::class, 'show_venue_details'])->name('venue_details');
 // Party Routes
 Route::get('/party/form', [App\Http\Controllers\PartyController::class, "party_form"])->name('main_party_form');
+Route::get('/party/form/{party_id?}', [App\Http\Controllers\PartyController::class, "party_form"])->name('party_planning');
+
