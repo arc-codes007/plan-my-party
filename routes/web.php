@@ -47,6 +47,8 @@ Route::post('/delete_user', [App\Http\Controllers\ProfileController::class, 'del
 
 Route::get('/guest/view_invitation/{guest_id}', [App\Http\Controllers\GuestController::class, 'view_invitation'])->name('guest_view_invitation');
 
+Route::get('/party/check_for_celebration_date_pass', [App\Http\Controllers\PartyController::class, 'check_for_celebration_date_pass'])->name('check_for_celebration_date_pass');
+
 
 Route::get('/about', function () {
     return view('about');

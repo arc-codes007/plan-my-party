@@ -11,11 +11,9 @@
             </span>
         </span>
         <span class="mx-2">
-            @if (count($party_guests->where('status', 'No Response')) > 0)
-                <button onclick="send_invitation({{$party_data['id']}}, 'all')" class="btn btn-primary text-white">
-                    Send Invite to all Guests
-                </button>                
-            @endif
+            <button onclick="send_invitation({{$party_data['id']}}, 'all')" class="btn btn-primary text-white">
+                Send Invite to all Guests
+            </button>                
         </span>
     </div>
     <div class="row mt-4" id="party_guests_container">
@@ -247,7 +245,7 @@ function send_invitation(id, type)
                 }
             });
         },
-    function(){});
+    function(){}).set('labels', {ok: 'Yes', cancel: 'No'});
 
 
 

@@ -17,14 +17,14 @@ class PartyController extends Controller
 {
     //
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function party_form($party_id = FALSE)
     {
-        $data = array();
+        $this->middleware('auth');
+
+        $data = array(
+            'is_planned' => FALSE
+        );
+
         if($party_id)
         {
             $party_data = Party::find($party_id);
@@ -32,15 +32,23 @@ class PartyController extends Controller
             {
                 return abort(404);
             }
+            if($party_data->status == config('pmp.party_statuses.celebrated'))
+            {
+                return abort(404);
+            }
+            
             if(!empty($party_data->timming))
             {
                 $party_data->timming = json_decode($party_data->timming, TRUE);
             }
 
-            $data = array(
-                'party_data' => $party_data,
-                'venue_data' => Venue::find($party_data['venue_id']),    
-            );
+            if($party_data->status == config('pmp.party_statuses.planned'))
+            {
+                $data['is_planned'] = TRUE;
+            }
+
+            $data['party_data'] = $party_data;
+            $data['venue_data'] = Venue::find($party_data['venue_id']);
 
             if($party_data['type'] == 'standard')
             {
@@ -61,26 +69,33 @@ class PartyController extends Controller
 
             $data['party_guests'] = $party_data->guest;
 
+
         }
 
-        $invite_templates = invite_template::get()->all();
-
-        if(!empty($invite_templates))
+        if( ! $data['is_planned'])
         {
-            $invite_templates_arr = array();
-            foreach($invite_templates as $template)
+            $invite_templates = invite_template::get()->all();
+
+            if(!empty($invite_templates))
             {
-                $invite_templates_arr[$template->id] = $template->getAttributes();
+                $invite_templates_arr = array();
+                foreach($invite_templates as $template)
+                {
+                    $invite_templates_arr[$template->id] = $template->getAttributes();
+                }
+                
+                $data['invite_templates'] = $invite_templates_arr;
             }
-            
-            $data['invite_templates'] = $invite_templates_arr;
         }
+
 
         return view("party.party_form", $data);
     }
 
     public function fetch_party_recommedations(Request $request)
     {
+        $this->middleware('auth');
+
         $request_params = $request->all();
 
         $packages = DB::table('packages');
@@ -208,6 +223,8 @@ class PartyController extends Controller
 
     public function create_party(Request $request)
     {
+        $this->middleware('auth');
+        
         $request->validate([
             'entity_id' => 'required',
             'belongs_to' => 'required'
@@ -261,6 +278,8 @@ class PartyController extends Controller
 
     public function save_party_data(Request $request)
     {
+        $this->middleware('auth');
+
         $request->validate([
             'party_id' => 'required',
             'party_name' => 'required',
@@ -295,4 +314,29 @@ class PartyController extends Controller
             return new Response(['errors' => ['Something went wrong']], 400);
         }
     } 
+
+    public function set_party_to_planned(Request $request)
+    {
+        $this->middleware('auth');
+
+        $request->validate([
+            'party_id' => 'required'
+        ]);
+
+        $party = Party::find($request->party_id);
+
+        $party->update(['status' => config('pmp.party_statuses.planned')]);
+
+        return new Response(['redirect' => route('party_planning', $party->id)], 402);
+    }
+
+    public function check_for_celebration_date_pass()
+    {
+        $all_parties = Party::where('date', '<' ,now())->get()->all();
+
+        foreach($all_parties as $party)
+        {
+            $party->update(['status' => config('pmp.party_statuses.celebrated')]);
+        }
+    }
 }

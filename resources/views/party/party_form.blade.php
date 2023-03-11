@@ -12,14 +12,20 @@
         </div>
         <div id="step_2_content">
             @if (!empty($party_data))    
-                @include("party.steps.step_2")            
+                @if ($is_planned)
+                    @include("party.steps.step_2_uneditable")
+                @else
+                    @include("party.steps.step_2")            
+                @endif
             @endif
         </div>
-        <div id="step_3_content" style="display: none">
-            @if (!empty($party_data))    
-                @include("party.steps.step_3")
-            @endif
-        </div>
+        @if ( ! $is_planned)
+            <div id="step_3_content" style="display: none">
+                @if (!empty($party_data))    
+                    @include("party.steps.step_3")
+                @endif
+            </div>
+        @endif
         <div id="step_4_content" style="display: none">
             @if (!empty($party_data))    
                 @include("party.steps.step_4")
@@ -70,6 +76,32 @@
                 break;
         }
     }
+
+    @if (!empty($party_data))    
+
+        function set_to_planned()
+        {
+            alertify.confirm("Notification", "Are you sure?<br> Once a party is set to planned you won't be able to edit any party data except managing the guest. Proceed with caution.",
+            function(){
+
+                    let data = {
+                        'party_id' : {{$party_data['id']}}
+                    };
+                    $.ajax({
+                    url: "{{ route('set_party_to_planned') }}",
+                    type: "POST",
+                    data: data,
+                    success: function(res_data) {
+                        
+                    },
+                    error: function(res_data) {
+                    }
+                });
+            },
+            function(){}).set('labels', {ok:'Yes', cancel:'No'});
+        }
+
+    @endif
 </script>
 
 @endsection

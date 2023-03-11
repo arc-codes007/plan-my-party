@@ -12,7 +12,7 @@
                     <img src="{{$party['image_src']}}" class="card-img-top" alt="party_image">
                     <div class="card-body">
                         <h5 class="card-title">{{$party['name']}}</h5>
-                        <div class="badge {{config('pmp.party_status_class.'.$party['status'])}} p-2 fs-6 my-2">Draft</div>
+                        <div class="badge {{config('pmp.party_status_class.'.$party['status'])}} p-2 fs-6 my-2">{{$party['status']}}</div>
                         <div class="card-text">
                             <div class="my-1">
                                 Date - {{$party['date']}}
@@ -28,7 +28,11 @@
                         </div>
                     </div>
                     <div class="d-grid card-footer bg-white">
-                        <a href="{{route('party_planning', $party['id'])}}" class="btn btn-danger text-white">Edit</a>
+                        @if ($party['status'] == config('pmp.party_statuses.celebrated'))
+                            <button class="btn btn-danger text-white">Rate the Party</button>
+                        @else
+                            <a href="{{route('party_planning', $party['id'])}}" class="btn btn-danger text-white">Edit</a>
+                        @endif
                     </div>
                 </div>
             </div>            

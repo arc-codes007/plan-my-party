@@ -60,4 +60,8 @@ Route::middleware('auth:api')->post('/guest/delete', [App\Http\Controllers\Guest
 Route::middleware('auth:api')->post('/guest/send_invitation', [App\Http\Controllers\GuestController::class, 'send_invitation'])->name('send_invitation');
 Route::middleware('auth:api')->post('/guest/save_response', [App\Http\Controllers\GuestController::class, 'save_response'])->name('record_guest_response');
 
+Route::middleware('auth:api')->post('/party/set_to_planned', [App\Http\Controllers\PartyController::class, 'set_party_to_planned'])->name('set_party_to_planned');
+
+
+
 
