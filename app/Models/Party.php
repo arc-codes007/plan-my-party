@@ -20,4 +20,14 @@ class Party extends Model
     {
         return $this->belongsTo(Venue::class);
     }
+
+    public function guest()
+    {
+        return $this->hasMany(Guest::class);
+    }
+
+    public function invitation()
+    {
+        return $this->belongsTo(Invitation::class);
+    }
 }

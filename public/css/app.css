@@ -675,20 +675,20 @@ a
   }
 }
 
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
   #wrapper {
-    padding-left: 0;
+    padding-left: 30px;
   }
 
   #sidebar-wrapper {
-    width: 0;
+    width: 30px;
   }
 
   #content-wrapper {
     position: relative;
     top: 0;
   }
-}
+} */
 /**
  * alertifyjs 1.13.1 http://alertifyjs.com
  * AlertifyJS is a javascript framework for developing pretty browser dialogs and notifications.

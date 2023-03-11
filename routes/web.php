@@ -45,6 +45,9 @@ Route::get('/template-form/{template_id?}', [App\Http\Controllers\InviteTemplate
 Route::get('/template-list', [App\Http\Controllers\InviteTemplateController::class, 'template_list'])->name('template_list');
 Route::post('/delete_user', [App\Http\Controllers\ProfileController::class, 'delete_user'])->name('delete_user');
 
+Route::get('/guest/view_invitation/{guest_id}', [App\Http\Controllers\GuestController::class, 'view_invitation'])->name('guest_view_invitation');
+
+
 Route::get('/about', function () {
     return view('about');
 })->name('about');

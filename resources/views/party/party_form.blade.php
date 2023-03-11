@@ -21,6 +21,9 @@
             @endif
         </div>
         <div id="step_4_content" style="display: none">
+            @if (!empty($party_data))    
+                @include("party.steps.step_4")
+            @endif
         </div>
 
     </section>
@@ -39,6 +42,8 @@
                 $('#step_4_content').hide();
                 $('#step_2_button').addClass('active');
                 $('#step_2_content').show();
+
+                window.location.href = window.location.href+'#step_1'
 
                 break;        
 

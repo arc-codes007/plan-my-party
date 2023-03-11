@@ -59,6 +59,8 @@ class PartyController extends Controller
                 $data['invitation_data'] = Invitation::find($party_data->invitation_id);
             }
 
+            $data['party_guests'] = $party_data->guest;
+
         }
 
         $invite_templates = invite_template::get()->all();

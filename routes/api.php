@@ -54,3 +54,10 @@ Route::middleware('auth:api')->get('/fetch-template-list', [App\Http\Controllers
 Route::middleware('auth:api')->get('/fetch-template-details', [App\Http\Controllers\InviteTemplateController::class, 'fetch_template_details'])->name('fetch_template_details');
 
 Route::middleware('auth:api')->post('/invitation/create_update', [App\Http\Controllers\InvitationController::class, 'create_update_invitation'])->name('create_update_invitation');
+
+Route::middleware('auth:api')->post('/guest/create_update', [App\Http\Controllers\GuestController::class, 'create_update_guest'])->name('create_update_guest');
+Route::middleware('auth:api')->post('/guest/delete', [App\Http\Controllers\GuestController::class, 'delete_guest'])->name('delete_guest');
+Route::middleware('auth:api')->post('/guest/send_invitation', [App\Http\Controllers\GuestController::class, 'send_invitation'])->name('send_invitation');
+Route::middleware('auth:api')->post('/guest/save_response', [App\Http\Controllers\GuestController::class, 'save_response'])->name('record_guest_response');
+
+
