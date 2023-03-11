@@ -76,7 +76,7 @@ $(document).ready(function()
                                 map_link = `<a href="${packages[package_index].gmap_link}" target="_BLANK"><i class="text-success fa-solid fa-map-location-dot"></i></a>`;
                             }
                             package_html_str += `<div class="col-6" onclick="toggle_package_view_modal(${packages[package_index].package_id},'{{ route('get_package_data') }}')">
-                                                    <div class="card">
+                                                    <div class="card h-100">
                                                         <div class="card-body">
                                                             <div class="row">
                                                                 <div class="col-3">

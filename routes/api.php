@@ -41,8 +41,8 @@ Route::middleware('auth:api')->get('/admin/stats', [App\Http\Controllers\AdminCo
 
 Route::middleware('auth:api')->get('/fetch-user-list', [App\Http\Controllers\UserController::class, 'fetch_user_list'])->name('fetch_user_list');
 
-Route::middleware('auth:api')->get('/fetch-venue-details-page', [App\Http\Controllers\VenueController::class, 'fetch_venue_details_page'])->name('fetch_venue_details_page');
-Route::middleware('auth:api')->get('/fetch-venue-package-page', [App\Http\Controllers\PackageController::class, 'fetch_venue_package_page'])->name('fetch_venue_package_page');
+Route::get('/fetch-venue-details-page', [App\Http\Controllers\VenueController::class, 'fetch_venue_details_page'])->name('fetch_venue_details_page');
+Route::get('/fetch-venue-package-page', [App\Http\Controllers\PackageController::class, 'fetch_venue_package_page'])->name('fetch_venue_package_page');
 
 
 Route::middleware('auth:api')->get('/party/fetch-recommedations', [App\Http\Controllers\PartyController::class, 'fetch_party_recommedations'])->name('fetch_party_recommendations');

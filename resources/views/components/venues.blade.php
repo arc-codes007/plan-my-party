@@ -66,8 +66,8 @@
                             if (venues[venue_index].gmap_link) {
                                 map_link = `<a href="${venues[venue_index].gmap_link}" target="_BLANK"><i class="text-success fa-solid fa-map-location-dot"></i></a>`;
                             }
-                            venue_html_str += `<div class="col-6">
-                                                    <div class="card">
+                            venue_html_str += `<div class="col-6" onclick="redirect_to_venue_view(${venues[venue_index].venue_id})">
+                                                    <div class="card h-100">
                                                         <div class="card-body">
                                                             <div class="row">
                                                                 <div class="col-3">
@@ -98,4 +98,9 @@
             error: function(res_data) {}
         });
     });
+
+function redirect_to_venue_view(venue_id)
+{
+    window.location.href = '{{route('venue_details')}}'+'/'+venue_id;
+}
 </script>

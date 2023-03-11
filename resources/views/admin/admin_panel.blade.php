@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+            <div class="card text-white bg-primary mb-3 h-100">
                 <div class="card-body">
                     <div class="row align-items-center my-3">
                         <div class="col-4 text-center">
@@ -24,7 +24,7 @@
               </div>
         </div>
         <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+            <div class="card text-white bg-secondary mb-3 h-100">
                 <div class="card-body">
                     <div class="row align-items-center my-3">
                         <div class="col-4 text-center">
@@ -45,7 +45,7 @@
               </div>
         </div>
         <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+            <div class="card text-white bg-success mb-3 h-100">
                 <div class="card-body">
                     <div class="row align-items-center my-3">
                         <div class="col-4 text-center">
@@ -66,7 +66,7 @@
               </div>
         </div>
         <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+            <div class="card text-white bg-danger mb-3 h-100">
                 <div class="card-body">
                     <div class="row align-items-center my-3">
                         <div class="col-4 text-center">
@@ -89,7 +89,7 @@
     </div>
     <div class="row justify-content-start">
         <div class="col-xl-4 col-lg-4 col-md-6">
-            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+            <div class="card text-white bg-primary mb-3 h-100">
                 <div class="card-body">
                     <div class="row align-items-center ">
                         <div class="col-4 text-center">

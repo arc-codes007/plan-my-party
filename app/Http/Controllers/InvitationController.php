@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invitation;
 use App\Models\Party;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class InvitationController extends Controller
@@ -27,10 +28,18 @@ class InvitationController extends Controller
 
         DB::beginTransaction();
 
-
-        $invitation = Invitation::create($invitation_data);
-
-        $party = Party::find($request->party_id)->update(['invitation_id' => $invitation->id]);
+        
+        if(!empty($request->invitation_id))
+        {
+            $invitation = Invitation::find($request->invitation_id);
+            $invitation->update($invitation_data);
+            $party = TRUE;
+        }
+        else
+        {
+            $invitation = Invitation::create($invitation_data);
+            $party = Party::find($request->party_id)->update(['invitation_id' => $invitation->id]);
+        }
 
         if($invitation && $party)
         {

@@ -1,6 +1,9 @@
 <div class="row h5">
     <div class="col-6">
         <form id="party_invitation_form">
+            @if (!empty($invitation_data))
+                <input type="hidden" id="party_invitation_id" value="{{$invitation_data['id']}}">
+            @endif    
             <div class="mx-2 my-3 text-danger fw-bold h3">
                 Templates : -
             </div>
@@ -47,7 +50,11 @@
 
 
 <script>
-    let selected_template_id = null;
+    @if (empty($invitation_data))
+        let selected_template_id = null;
+    @else
+        let selected_template_id = {{$invitation_data['invite_template_id']}}
+    @endif
     $(document).ready(function(){
 
         tinyMCE.init({
@@ -82,6 +89,11 @@
                 'title' : $("#invitation_title").val(),
                 'content' : tinyMCE.get('invitation_content').getContent(),
             };
+
+            if($("#party_invitation_id").val())
+            {
+                data['invitation_id'] = $("#party_invitation_id").val();
+            }
 
             $.ajax({
                 url: "{{ route('create_update_invitation') }}",

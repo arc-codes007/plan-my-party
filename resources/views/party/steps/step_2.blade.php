@@ -152,7 +152,7 @@
                 </div>
             </div>
         @else
-        <div class="border border-dark border-2 row justify-content-center align-items-center template_background" id="party_invitation" style="height : 70vh; width:70%; background-image: url({{asset($invite_templates[$invitation_data['invite_template_id']]['image_path'])}})">
+        <div class="border border-dark border-2 row justify-content-center align-items-center template_background" style="height : 70vh; width:70%; background-image: url({{asset($invite_templates[$invitation_data['invite_template_id']]['image_path'])}})">
             <div class="text-center h3" style="overflow:hidden">{!! $invitation_data['title'] !!}</div>
             <div class="text-center h4" style="overflow:hidden">{!! $invitation_data['content'] !!}</div>
         </div>
