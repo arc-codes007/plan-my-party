@@ -81,7 +81,7 @@ $(document).ready(function(){
 
         @guest
             data['user_type'] = 'guest';
-            data['user_id'] = {{(isset($guest_id) ? $guest_id : ''}};
+            data['user_id'] = {{(isset($guest_id)) ? $guest_id : ''}};
         @else
             data['user_type'] = 'user';
             data['user_id'] = {{Auth::user()->id}};
