@@ -11,13 +11,13 @@
             <div class="mx-2">
                 <div class="my-3">
                     <label for="party_date" class="mb-2 form-label">Party Date:</label>
-                    <input type="date" class="form-control" name="party_date" id="party_date" value="{{date('Y-m-d', strtotime($party_data['date']))}}">
+                    <input type="date"  min="{{ date("Y-m-d") }}"  class="form-control" name="party_date" id="party_date" value="{{date('Y-m-d', strtotime($party_data['date']))}}">
                 </div>
             </div>
             <div class="mx-2">
                 <div class="my-3">
                     <label for="party_person_count" class="mb-2 form-label">Person Count:</label>
-                    <input type="number" class="form-control" name="party_person_count" id="party_person_count" value="{{$party_data['person_count']}}">
+                    <input type="number" {{(isset($package_data)) ? "max=".$package_data['max_persons']." min=".$package_data['min_persons'] : '' }} class="form-control" name="party_person_count" id="party_person_count" value="{{$party_data['person_count']}}">
                 </div>
             </div>
             <div class="mx-2">
