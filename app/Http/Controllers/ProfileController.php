@@ -108,7 +108,7 @@ class ProfileController extends Controller
     {
 
         $request->validate([
-            'email' => 'required | email',
+            'email' => 'required | email | unique:users',
             'phone' => 'required | digits:10',
         ]);
 
