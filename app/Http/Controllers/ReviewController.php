@@ -70,7 +70,10 @@ class ReviewController extends Controller
 
             $package = Package::find($review_data['package_id']);
             $venue->update(['rating' => $package_average_rating]);
-
+        }
+        else
+        {
+            $package = TRUE;
         }
 
         if($review && $venue && $package)
