@@ -6,10 +6,12 @@ use App\Models\Guest;
 use App\Models\Package;
 use App\Models\Party;
 use App\Models\Review;
+use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class ReviewController extends Controller
 {
@@ -69,7 +71,7 @@ class ReviewController extends Controller
             $package_average_rating = round($package_average_rating->average_rating);
 
             $package = Package::find($review_data['package_id']);
-            $venue->update(['rating' => $package_average_rating]);
+            $package->update(['rating' => $package_average_rating]);
         }
         else
         {
@@ -88,5 +90,41 @@ class ReviewController extends Controller
         }
 
 
+    }
+
+    public function fetch_package_reviews(Request $request)
+    {
+        $request->validate([
+            'package_id' => 'required'
+        ]);
+
+        $reviews_raw_data = Review::where('package_id', $request->package_id)->orderBy('rating', 'DESC')->get();
+
+        $reviews_data = array();
+        foreach($reviews_raw_data as $review)
+        {
+            if($review->user_type == 'guest')
+            {
+                $reviewer_name = Guest::find($review->user_id)->name;
+            }
+            else
+            {
+                $reviewer_name = User::find($review->user_id)->name;
+            }
+
+            $data = array(
+                'reviewer_name' => $reviewer_name,
+                'rating' => $review->rating,
+                'review' => $review->review,
+                'user_type' => $review->user_type,
+            );
+
+            $reviews_data[] = view("components.review_card", $data)->render();
+        }
+
+        $response_data['package_reviews'] = $reviews_data;
+
+        return new Response($response_data, 200);
+        
     }
 }

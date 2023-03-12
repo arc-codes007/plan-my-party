@@ -80,7 +80,11 @@
                     @include('components.venue_packages', ['venue_id' => $venue_id]) 
                 </div>
 
-                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="contact-tab">Reviews</div>
+                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="row p-3" id="venue_review_container">
+
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -106,9 +110,9 @@ $(document).ready(function() {
                 $("#venue_rating").html(venue_data.venue_rating);
                 let address = venue_data.address;
                 if(venue_data.gmap_location)
-            {
-                address += ` <a href="${venue_data.gmap_location}" data-bs-toggle="tooltip" title="Open in Google Maps" target="_BLANK"><i class="text-success fa-solid fa-map-location-dot"></i></a>`;
-            }                
+                {
+                    address += ` <a href="${venue_data.gmap_location}" data-bs-toggle="tooltip" title="Open in Google Maps" target="_BLANK"><i class="text-success fa-solid fa-map-location-dot"></i></a>`;
+                }                
             $("#address").html(address);            
 
                 $("#type").html(venue_data.type);
@@ -165,6 +169,12 @@ $(document).ready(function() {
                 }                
             $('#secondary_image').html(path1);
 
+            let venue_reviews = venue_data.venue_reviews;
+
+            for(let review_html of venue_reviews)
+            {
+                $("#venue_review_container").append(`<div class="col-sm-12 col-md-6 col-lg-4 col-xs-3 my-2">${review_html}</div>`)
+            }
 
             
             },

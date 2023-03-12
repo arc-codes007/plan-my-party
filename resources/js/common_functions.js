@@ -31,6 +31,14 @@ toggle_package_view_modal = function(package_id, api_url)
             $("#pkg_modal_package_name").html(package_data.name);
             $("#pkg_modal_venue_name").html(package_data.venue_name);
             $("#pkg_modal_venue_rating").html(package_data.venue_rating);
+
+            let package_rating = "(Not Rated Yet!)";
+            if(package_data.package_rating)
+            {
+                package_rating = `<span style='cursor:pointer' data-bs-toggle="tooltip" title="View Reviews" onclick='open_package_reviews_modal(${package_id})'>(${package_data.package_rating} <i class='text-warning fa-solid fa-star'></i>)</span>`;
+            }
+            $("#pkg_modal_package_rating").html(package_rating);
+
             let address = package_data.address;
             if(package_data.gmap_link)
             {

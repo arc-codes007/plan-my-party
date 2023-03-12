@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guest;
 use App\Models\Venue;
 use App\Models\Image;
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -293,7 +296,7 @@ class VenueController extends Controller
 
     public function show_venue_details($venue_id = false)
     {
-        return view('admin.venue_details', ['venue_id' => $venue_id]);
+        return view('venue_details', ['venue_id' => $venue_id]);
     }
 
     function fetch_venue_details_page(Request $request)
@@ -326,6 +329,30 @@ class VenueController extends Controller
                 );
             }
         }
+
+        $reviews_raw_data = Review::where('venue_id', $venue_id)->orderBy('rating', 'DESC')->get();
+
+        $reviews_data = array();
+        foreach($reviews_raw_data as $review)
+        {
+            if($review->user_type == 'guest')
+            {
+                $reviewer_name = Guest::find($review->user_id)->name;
+            }
+            else
+            {
+                $reviewer_name = User::find($review->user_id)->name;
+            }
+
+            $data = array(
+                'reviewer_name' => $reviewer_name,
+                'rating' => $review->rating,
+                'review' => $review->review,
+                'user_type' => $review->user_type,
+            );
+
+            $reviews_data[] = view("components.review_card", $data)->render();
+        }
         
         $venue_details = array(
             'name' => $venue_rawdata['name'],
@@ -346,6 +373,7 @@ class VenueController extends Controller
             ),
             'secondary_pictures' => $secondary_pictures,
             'image_src' => asset($primary_picture->image_path),
+            'venue_reviews' => $reviews_data,
         );
 
 

@@ -277,11 +277,12 @@ class PackageController extends Controller
             'timmings' => (empty($package->timmings)) ? json_decode($package->venue->timmings, TRUE) : json_decode($package->timmings, TRUE),
             'sitting_type' => $package->venue_type,
             'package_rating' => empty($package->rating) ? FALSE :  $package->rating,
-            'venue_name' => $package->venue->name,
+            'venue_name' => "<a href='".route('venue_details', $package->venue->id)."'>".$package->venue->name."</a>",
             'address' => $package->venue->address,
             'gmap_link' => $package->venue->gmap_location,
             'parking_available' => ($package->venue->parking_capacity > 0) ? TRUE : FALSE,
             'venue_rating' => $package->venue->venue_rating,
+            'package_rating' => $package->rating,
         );
 
         $response_data = array(
@@ -290,15 +291,6 @@ class PackageController extends Controller
 
         return new Response($response_data, 200);
     }
-
-    // public function get_package_details(Request $request)
-    // {
-    //     $request->validate([
-    //         'package_id' => 'required'
-    //     ]);
-
-    //     $package_id = $request->package_id;
-
 
     public function fetch_venue_package_page(Request $request)
     {        

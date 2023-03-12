@@ -63,3 +63,5 @@ Route::middleware('auth:api')->post('/guest/save_response', [App\Http\Controller
 Route::middleware('auth:api')->post('/party/set_to_planned', [App\Http\Controllers\PartyController::class, 'set_party_to_planned'])->name('set_party_to_planned');
 
 Route::post('/review/save', [App\Http\Controllers\ReviewController::class, 'save_review'])->name('save_review');
+
+Route::middleware('auth:api')->get('/package/get_reviews', [App\Http\Controllers\ReviewController::class, 'fetch_package_reviews'])->name('fetch_package_reviews');
