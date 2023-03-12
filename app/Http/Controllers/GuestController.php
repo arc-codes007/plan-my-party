@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\PartyInvite;
 use App\Models\Guest;
 use App\Models\Party;
+use App\Models\Review;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -125,6 +126,23 @@ class GuestController extends Controller
 
         $invitation = $guest->party->invitation;
 
+        $open_review_modal = FALSE;
+        $is_celebrated = FALSE;
+        if($guest->party->status == config('pmp.party_statuses.celebrated'))
+        {
+            $is_celebrated = TRUE;
+            if($guest->status != 'Accepted')
+            {
+                return abort(404);
+            } 
+
+            if( ! count(Review::where('user_type', 'guest')->where('user_id', $guest_id)->where('party_id', $guest->party->id)->get()) > 0)
+            {
+                $open_review_modal = TRUE;
+            }
+
+        }
+
         $data = array(
             'guest_id' => $guest_id,
             'invitation_title' => $invitation->title,
@@ -132,6 +150,8 @@ class GuestController extends Controller
             'invitation_image_path' => $invitation->invite_template->image_path,
             'guest_response_status' => $guest->status,
             'host_name' => $guest->party->user->name,
+            'open_review_modal' => $open_review_modal,
+            'is_celebrated' => $is_celebrated,
         );
 
 

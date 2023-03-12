@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Image;
 use App\Models\Package;
+use App\Models\Review;
 use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Http\Request;
@@ -60,7 +61,16 @@ class HomeController extends Controller
                 $party_prepped_data['image_src'] = asset($primary_picture->image_path);
             }
 
+            $party_prepped_data['rated_by_user'] = FALSE;
+
+            if(count(Review::where('user_type', 'user')->where('user_id', $party->user_id)->where('party_id', $party->id)->get()) > 0)
+            {
+                $party_prepped_data['rated_by_user'] = TRUE;
+            }
+
+
             $data['user_parties'][] = $party_prepped_data;
+            
         }
         
         return view('home', $data);

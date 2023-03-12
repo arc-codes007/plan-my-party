@@ -27,18 +27,31 @@
                             @endif
                         </div>
                     </div>
-                    <div class="d-grid card-footer bg-white">
-                        @if ($party['status'] == config('pmp.party_statuses.celebrated'))
-                            <button class="btn btn-danger text-white">Rate the Party</button>
-                        @else
-                            <a href="{{route('party_planning', $party['id'])}}" class="btn btn-danger text-white">Edit</a>
-                        @endif
-                    </div>
+                    @if (! $party['rated_by_user'])
+                        <div class="d-grid card-footer bg-white">
+                            @if ($party['status'] == config('pmp.party_statuses.celebrated'))
+                                <button class="btn btn-danger text-white" onclick="open_review_modal({{$party['id']}})">Rate the Party</button>
+                            @else
+                                <a href="{{route('party_planning', $party['id'])}}" class="btn btn-danger text-white">Edit</a>
+                            @endif
+                        </div>                        
+                    @endif
                 </div>
             </div>            
         @endforeach
     </div>
 </div>    
+
+<script>
+    function open_review_modal(party_id)
+    {
+        $("#review_for_party_id").val(party_id);
+
+        var add_review_modal = new bootstrap.Modal(document.getElementById('add_review_modal'));
+        add_review_modal.toggle();
+
+    }
+</script>
 @endif
 @include('components.venues')
 @include('components.packages')

@@ -38,6 +38,7 @@
         </main>
     </div>
 @include('components.package_view_modal');
+@include('components.review_modal');
 
 <script src="{{ asset('js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
 <script>
