@@ -7,15 +7,14 @@
             <div class="card">
                 <div class="card-header bg-danger text-white text-center">{{ __('Profile') }}</div>
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <label class="col-md-4 col-form-label text-md-end">Name</label>
-                        <div class="col-md-6">
-                            <label class="col-md-4 col-form-label text-md-end">{{Auth::user()->name;}}</label>
-                        </div>
-                    </div>
-
                     <form id="update_user_form">
                         <input type="hidden" id="id" name="id" value="{{Auth::user()->id}}">
+                        <div class="row mb-3">
+                            <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control" name="name" value="{{Auth::user()->name}}" required>
+                            </div>
+                        </div>
                         <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-end">Email Address</label>
                             <div class="col-md-6">
@@ -89,7 +88,7 @@
                                 <label for="current_pass" class="col-md-4 col-form-label text-md-end">{{ __('Current Password') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="current_pass" type="text" class="form-control @error('current_pass') is-invalid @enderror" name="current_pass" value="{{ $current_pass ?? old('current_pass') }}" required autocomplete="current_pass" autofocus>
+                                    <input id="current_pass" type="password" class="form-control @error('current_pass') is-invalid @enderror" name="current_pass" value="{{ $current_pass ?? old('current_pass') }}" required autocomplete="current_pass" autofocus>
 
                                     @error('current_pass')
                                     <span class="invalid-feedback" role="alert">
@@ -162,7 +161,8 @@
         });
 
 
-        $('#update_user_form').submit(function(e) {
+        $('#update_user_form').submit(function(e) 
+        {
             e.preventDefault();
             $("#save_btn").prop('disabled', true);
             let form_data = new FormData(document.getElementById("update_user_form"));
@@ -174,15 +174,11 @@
                 processData: false,
                 contentType: false,
                 success: function(res_data) {
+                    alertify.alert('Notification', res_data.message)
                     $("#save_btn").prop('disabled', false);
-                    console.log("successfully updated");
-                    console.log(res_data);
                 },
                 error: function(res_data) {
                     $("#save_btn").prop('disabled', false);
-                    alertify.alert('Error', res_data.responseJSON.error);
-                    console.log("error in update");
-                    console.log(res_data);
                 }
             });
         });

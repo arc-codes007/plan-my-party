@@ -131,6 +131,12 @@
             <div class="mx-2 my-3">
                 Venue - {{$venue_data['name']}}
             </div>
+            <div class="mx-2 my-3">
+                Contact Email - {{$contact_email}}
+            </div>
+            <div class="mx-2 my-3">
+                Contact Phone - {{$contact_phone}}
+            </div>
             @if (isset($package_data))
             <div class="mx-2 my-3">
                 Approximate Total Cost - <span id="party_total_cost">{!!(empty($party_data['person_count'])) ? '<span class="text-danger h5">Enter Person Count</span>' : $party_data['person_count']*$package_data['cost']." /-"!!}</span>
@@ -153,8 +159,8 @@
             </div>
         @else
         <div class="border border-dark border-2 row justify-content-center align-items-center template_background" style="height : 70vh; width:70%; background-image: url({{asset($invitation_data->invite_template->image_path)}})">
-            <div class="text-center h3" style="overflow:hidden">{!! $invitation_data['title'] !!}</div>
-            <div class="text-center h4" style="overflow:hidden">{!! $invitation_data['content'] !!}</div>
+            <div class="text-center h3 mx-2 fw-bold" style="overflow:hidden">{!! $invitation_data['title'] !!}</div>
+            <div class="text-center h4 mx-2 fw-bold" style="overflow:hidden">{!! $invitation_data['content'] !!}</div>
         </div>
         @endif
     </div>

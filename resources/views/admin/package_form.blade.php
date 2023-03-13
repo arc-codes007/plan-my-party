@@ -14,7 +14,6 @@
         <div class="card-body">
             <div class="card-title display-5 text-center">Package Form</div>
             <div class="row gap-4 justify-content-center">
-                {{-- ***************************************** --}}                    
                 <div class="col-md-4 col-sm-12">
                     <label class="form-label h5">Venue</label>
                     <select name="venue_id" id="venue_id" class="form-control select2-tags" disabled>
@@ -90,8 +89,6 @@
                 <div class="col-md-4 col-sm-12">
                     <label class="form-label h5">Additional Details</label>
                     <select name="additional_details[]" id="additional_details" class="form-control select2-tags" multiple>
-                        <option value="Take Away">Take Away</option>
-                        <option value="Delivery">Delivery</option>
                     </select>
                 </div>
                 <div class="col-md-4 col-sm-12">

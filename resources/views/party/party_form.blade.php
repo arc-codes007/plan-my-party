@@ -38,6 +38,7 @@
 <script>
     function navigate_to(step)
     {
+        console.log(step);
         switch (step) 
         {
             case 2:
@@ -48,8 +49,6 @@
                 $('#step_4_content').hide();
                 $('#step_2_button').addClass('active');
                 $('#step_2_content').show();
-
-                window.location.href = window.location.href+'#step_1'
 
                 break;        
 

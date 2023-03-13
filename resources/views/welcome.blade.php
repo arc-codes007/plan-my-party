@@ -6,7 +6,7 @@
         <div class="container py-3">
             <h1 class="text-center text-white">PLAN-my-PARTY</h1>
             <h5 class="text-center text-white">One stop destination for all your PARTIES <i class="fa-solid fa-champagne-glasses"></i></h5>
-            <h3 class="text-center text-white pt-3"><a href="#" class="btn rounded-pill btn-outline-warning text-white"><strong>PLAN a PARTY Now <i class="fa-solid fa-champagne-glasses"></i></strong></a></h3>
+            <h3 class="text-center text-white pt-3"><a href="{{route('register')}}" class="btn rounded-pill btn-outline-warning text-white"><strong>PLAN a PARTY Now <i class="fa-solid fa-champagne-glasses"></i></strong></a></h3>
         </div>
     </div>
 </section>

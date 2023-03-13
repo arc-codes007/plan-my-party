@@ -46,15 +46,11 @@
                     <div class="col-md-4 col-sm-12">
                         <label class="form-label">Cuisines</label>
                         <select name="cuisines[]" id="cuisines" class="form-control select2-tags" multiple>
-                            <option value="Indian">Indian</option>
-                            <option value="Thai">Thai</option>
                         </select>
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <label class="form-label">Additional Features</label>
                         <select name="additional_features[]" id="additional_features" class="form-control select2-tags" multiple>
-                            <option value="Take Away">Take Away</option>
-                            <option value="Delivery">Delivery</option>
                         </select>
                     </div>
                     <div class="col-md-4 col-sm-12">
@@ -156,16 +152,6 @@
                             $('#' + day + '_to').val(res_data.timmings[day]['to']).trigger('change');
                         }
                     } else if (['cuisines', 'additional_features'].includes(key)) {
-                        if (res_data[key]) {
-                            $('#' + key + ' option').each(function() {
-                                let val = $(this).val();
-                                if (res_data[key].includes(val)) {
-                                    $(this).prop('selected', true);
-                                    delete res_data[key][val];
-                                }
-                            });
-                        }
-
                         for (let remaining_val in res_data[key]) {
                             $('#' + key).append(`<option selected value="${res_data[key][remaining_val]}">${res_data[key][remaining_val]}</option>`);
                         }

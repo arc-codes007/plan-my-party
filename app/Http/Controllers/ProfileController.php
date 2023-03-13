@@ -62,12 +62,8 @@ class ProfileController extends Controller
             }
         }
         $data['user'] = $user;
-        if ($user->save()) {
-            // return  redirect()->route('profile_view');
-            return new Response(['redirect' => route('profile_view')], 200);
-        } else {
-            return new Response(['redirect' => route('profile_view')], 402);
-        }
+
+        return  redirect()->route('profile_view');
     }
 
     public function delete_user(Request $request)
@@ -82,11 +78,12 @@ class ProfileController extends Controller
         );
         $user = User::find($pass_data['user_id']);
         if (Hash::check($pass_data['pass_confirm'], $user['password'])) {
-            // $user->delete();
+
             if ($user->delete()) {
                 Auth::logout();
                 return redirect(route('landing'));
             }
+
         } else {
             return new Response(['errors' => ['Something went wrong']],400);
         }
@@ -108,26 +105,38 @@ class ProfileController extends Controller
     {
 
         $request->validate([
-            'email' => 'required | email | unique:users',
+            'id' => 'required',
+            'name' => 'required',
+            'email' => 'required | email',
             'phone' => 'required | digits:10',
         ]);
 
+
         $update_data = array(
-            'id' => $request['id'],
+            'name' => $request['name'],
             'email' => $request['email'],
             'phone' => $request['phone'],
         );
-        // print_r($update_data);
 
 
-        $user = User::find($update_data['id'])->get()->all();
-        if (!empty($user)) {
-            $users = User::where('id', $update_data['id'])->first();
-            $users->update($update_data);
-            // print_r("success");
-            return new Response(['redirect' => route('profile_view')], 200);
-        } else {
-            return new Response(['redirect' => route('profile_view')], 402);
+        $user = User::find($request->id);
+
+        if($update_data['email'] != $request->email)
+        {
+            $request->validate([
+                'email' => 'unique:users',
+            ]);
+        }
+
+        $user->update($update_data);
+        
+        if ($user) 
+        {
+            return new Response(['message' => 'Profile Updated Successfully!'], 200);
+        } 
+        else 
+        {
+            return new Response(['errors' => ['Something went wrong!']], 402);
         }
     }
 }

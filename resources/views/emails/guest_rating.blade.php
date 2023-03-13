@@ -2,7 +2,7 @@
  
 Hey there! We hope you enjoyed the Party hosted by {{$host_name}}.
 <br>
-Please give us your valuable time to post a review about your exprience.
+Please give us your valuable time to post a review about your experience.
 <br><br>
 Please click below :- <br>
 @component('mail::button', ['url' => $invitation_link])

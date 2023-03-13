@@ -6,7 +6,7 @@
     <div id="content-wrapper">
 
         <aside id="sidebar-wrapper">
-            <div class="image_with_bottom_shadow  text-center m-3" style="max-height: 18rem; overflow-y:hidden">
+            <div class="text-center m-3" style="max-height: 18rem; overflow-y:hidden">
                 <img alt="img" class="img-fluid" id="venue_image1"/>                                
                 <div class="mt-3 h4 fw-bold"><span id="venue_name1"></span></div>                                
             </div>

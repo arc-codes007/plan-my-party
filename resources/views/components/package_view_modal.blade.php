@@ -72,6 +72,9 @@
         data: {package_id},
         success: function(res_data) {
           let package_reviews = res_data.package_reviews;
+
+          $("#pkg_modal_package_reviews_container").html('');
+          
           for(let review_html of package_reviews)
           {
             $("#pkg_modal_package_reviews_container").append("<div class='col-12 my-2'>"+review_html+"</div>");

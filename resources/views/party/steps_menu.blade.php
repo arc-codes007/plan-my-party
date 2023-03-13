@@ -14,15 +14,13 @@
           @endif
         </div>
       </li>
-      @if ( ! $is_planned)
-        <li id="step_3_button" class="{{(empty($party_data)) ? 'locked': ''}}" {{(!empty($party_data)) ? 'onclick=navigate_to(3)': ''}}>
-          <div class="p-3 text-center text-nowrap">Step 3: Invitation
-            @if (empty($party_data))
-              <i class="fa-solid fa-lock"></i>
-            @endif
-          </div>
-        </li>        
-      @endif
+      <li id="step_3_button" class="{{(empty($party_data) || $is_planned) ? 'locked': ''}}" {{(!empty($party_data) && ! $is_planned) ? 'onclick=navigate_to(3)': ''}}>
+        <div class="p-3 text-center text-nowrap">Step 3: Invitation
+          @if (empty($party_data) || $is_planned)
+            <i class="fa-solid fa-lock"></i>
+          @endif
+        </div>
+      </li>        
       <li id="step_4_button" class="{{(empty($party_data)) ? 'locked': ''}}" {{(!empty($party_data)) ? 'onclick=navigate_to(4)': ''}}>
         <div class="p-3 text-center text-nowrap">Step 4: Guests
           @if (empty($party_data))

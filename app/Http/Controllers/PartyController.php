@@ -52,11 +52,31 @@ class PartyController extends Controller
             $data['party_data'] = $party_data;
             $data['venue_data'] = Venue::find($party_data['venue_id']);
 
+            if(!empty($data['venue_data']->contact_email))
+            {
+                $data['contact_email'] = $data['venue_data']->contact_email;
+            }
+
+            if(!empty($data['venue_data']->contact_phone))
+            {
+                $data['contact_phone'] = $data['venue_data']->contact_phone;
+            }
+
             if($party_data['type'] == 'standard')
             {
                 $data['package_data'] = Package::find($party_data['package_id']);
                 $primary_picture = Image::where(['entity_id' => $party_data['package_id'], 'belongs_to' => 'package', 'type' => 'primary'])->first();
                 $data['party_image_src'] = asset($primary_picture->image_path);
+
+                if(!empty($data['package_data']->contact_email))
+                {
+                    $data['contact_email'] = $data['package_data']->contact_email;
+                }
+
+                if(!empty($data['package_data']->contact_phone))
+                {
+                    $data['contact_phone'] = $data['package_data']->contact_phone;
+                }
             }
             else
             {
@@ -73,11 +93,11 @@ class PartyController extends Controller
 
 
         }
-
         if( ! $data['is_planned'])
         {
             $invite_templates = invite_template::get()->all();
 
+            $data['invite_templates'] = array();
             if(!empty($invite_templates))
             {
                 $invite_templates_arr = array();
@@ -89,7 +109,7 @@ class PartyController extends Controller
                 $data['invite_templates'] = $invite_templates_arr;
             }
         }
-
+    
 
         return view("party.party_form", $data);
     }
@@ -309,7 +329,7 @@ class PartyController extends Controller
 
         if($party->update($party_data))
         {
-            return new Response(['message' => "Party Saved Successfully!"], 200);
+            return new Response(['redirect' => route('party_planning', $request->party_id)], 402);
         }
         else
         {

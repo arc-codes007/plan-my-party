@@ -16,7 +16,10 @@
                             $selected_template_id[] = $invitation_data['invite_template_id'];
                         }
                     @endphp
-                    <img class="col-4 img-thumbnail mx-2 p-2 invite_template_image {{(in_array($template['id'], $selected_template_id)) ? 'bg-selected' : ''}}" style="height: 20rem; width: 15rem; cursor: pointer;" onclick="fetch_invite_data({{$template['id']}}, {{$party_data['id']}}, event)" src="{{asset($template['image_path'])}}" alt="">
+                    <div class="col-4">
+                        <img class="img-thumbnail mx-2 p-2 invite_template_image {{(in_array($template['id'], $selected_template_id)) ? 'bg-selected' : ''}}" style="height: 20rem; width: 15rem; cursor: pointer;" onclick="fetch_invite_data({{$template['id']}}, {{$party_data['id']}}, event)" src="{{asset($template['image_path'])}}" alt="">
+                        <div class="text-center">{{ $template['name'] }}</div>    
+                    </div>
                 @endforeach
             </div>
 
@@ -38,10 +41,10 @@
     </div>
     <div class="col-6 d-flex p-5 justify-content-center align-items-center">
         <div class="border border-dark border-2 row justify-content-center align-items-center template_background" id="party_invitation" style="height : 70vh; width:70%; {{!empty($invitation_data) ? 'background-image : url('.asset($invite_templates[$invitation_data['invite_template_id']]['image_path']).')' : ''}}">
-            <div class="text-center h3" id="party_invitation_title" style="overflow:hidden">
+            <div class="text-center h3 mx-2 fw-bold" id="party_invitation_title" style="overflow:hidden">
                 {!! !empty($invitation_data) ? $invitation_data['title'] : '' !!}
             </div>
-            <div class="text-center h4" id="party_invitation_content" style="overflow:hidden">
+            <div class="text-center h4 mx-2 fw-bold" id="party_invitation_content" style="overflow:hidden">
                 {!! !empty($invitation_data) ? $invitation_data['content'] : '' !!}
             </div>
         </div>

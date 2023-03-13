@@ -44,7 +44,7 @@ class InvitationController extends Controller
         if($invitation && $party)
         {
             DB::commit();
-            return new Response(['message' => "Invitation Saved Successfully!"], 200);
+            return new Response(['redirect' => route('party_planning', $request->party_id)], 402);
         }
         else
         {

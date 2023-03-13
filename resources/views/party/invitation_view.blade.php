@@ -3,8 +3,8 @@
 <div class="container mt-5 d-flex justify-content-center">
     <div class="d-flex justify-content-center">
         <div class="border border-dark border-2 row justify-content-center align-items-center template_background" style="height : 45rem; width:35rem; background-image: url({{asset($invitation_image_path)}})">
-            <div class="text-center h3" style="overflow:hidden">{!! $invitation_title !!}</div>
-            <div class="text-center h4" style="overflow:hidden">{!! $invitation_content !!}</div>
+            <div class="text-center h3 mx-2 fw-bold" style="overflow:hidden">{!! $invitation_title !!}</div>
+            <div class="text-center h4 mx-2 fw-bold" style="overflow:hidden">{!! $invitation_content !!}</div>
         </div>
     </div>
     @if( ! $is_celebrated)
