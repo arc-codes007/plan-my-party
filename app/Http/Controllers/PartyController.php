@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\GuestRating;
 use App\Models\Image;
 use App\Models\Invitation;
 use App\Models\invite_template;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class PartyController extends Controller
 {
@@ -332,10 +334,22 @@ class PartyController extends Controller
 
     public function check_for_celebration_date_pass()
     {
-        $all_parties = Party::where('date', '<' ,now())->get()->all();
+        $all_parties = Party::where('date', '<' ,now())->where('status', config('pmp.party_statuses.planned'))->get()->all();
 
         foreach($all_parties as $party)
         {
+            $party_guests = $party->guest->where('status', 'Accepted');
+
+            foreach($party_guests as $guest)
+            {
+                $data = array(
+                    'invitation_link' => route('guest_view_invitation', $guest->id),
+                    'host_name' => $party->user->name,
+                );
+
+                Mail::to($guest->email)->send(new GuestRating($data));
+            }
+
             $party->update(['status' => config('pmp.party_statuses.celebrated')]);
         }
     }

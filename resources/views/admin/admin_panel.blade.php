@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="col-xl-3 col-lg-4 col-md-6 my-2">
             <div class="card text-white bg-primary mb-3 h-100">
                 <div class="card-body">
                     <div class="row align-items-center my-3">
@@ -23,7 +23,7 @@
                 </div>
               </div>
         </div>
-        <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="col-xl-3 col-lg-4 col-md-6 my-2">
             <div class="card text-white bg-secondary mb-3 h-100">
                 <div class="card-body">
                     <div class="row align-items-center my-3">
@@ -44,7 +44,7 @@
                 </div>
               </div>
         </div>
-        <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="col-xl-3 col-lg-4 col-md-6 my-2">
             <div class="card text-white bg-success mb-3 h-100">
                 <div class="card-body">
                     <div class="row align-items-center my-3">
@@ -64,31 +64,8 @@
 
                 </div>
               </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="card text-white bg-danger mb-3 h-100">
-                <div class="card-body">
-                    <div class="row align-items-center my-3">
-                        <div class="col-4 text-center">
-                            <i class="fa-solid fa-gifts icon_6em"></i>
-                        </div>
-                        <div class="col-8">
-                            <div class="row justify-content-center">
-                                <h1 class="text-center"><span id="party_count">0</span> Parties</h1>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <div class="mx-1 text-center"><a href="" class="btn btn-outline-light">Add</a></div>
-                                <div class="mx-1 text-center"><a href="" class="btn btn-outline-light">List</a></div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-              </div>
-        </div>        
-    </div>
-    <div class="row justify-content-start">
-        <div class="col-xl-4 col-lg-4 col-md-6">
+        </div>  
+        <div class="col-xl-3 col-lg-4 col-md-6 my-2">
             <div class="card text-white bg-primary mb-3 h-100">
                 <div class="card-body">
                     <div class="row align-items-center ">
@@ -109,10 +86,7 @@
                 </div>
               </div>
         </div>
-
     </div>
-
-
 </div>
 
 <script>
@@ -126,6 +100,7 @@ $(document).ready(function()
                 $('#user_count').html(response.data.users);
                 $('#venue_count').html(response.data.venues);
                 $('#package_count').html(response.data.packages);
+                $('#templates_count').html(response.data.template);
             },
             error: function(res_data) {
             }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\invite_template;
 use App\Models\Package;
 use App\Models\User;
 use App\Models\Venue;
@@ -31,7 +32,8 @@ class AdminController extends Controller
             'users' => User::count(),
             'venues' => Venue::count(),
             'packages' => Package::count(),
-        );
+            'template' => invite_template::count(),
+        ); 
 
         return new Response(['data' => $statistics], 200);
     }
