@@ -38,26 +38,29 @@
                     for (let j = 0; j < 2; ++j) {
                         if (venues[venue_index]) {
                             let features = '<div class="row">';
-                            let feature_count = 0;
 
                             let total_features = 4;
                             let additional_features = venues[venue_index].additional_features;
-                            if (additional_features.length < 4) {
+                            if(additional_features.length < 4)
+                            {
                                 total_features = additional_features.length;
                             }
 
-                            if (venues[venue_index].parking_available) {
+                            if (venues[venue_index].parking_available)
+                            {
                                 features += `<div class="col-6"><i class="text-warning fa-solid fa-square-parking"></i> Parking Available</div>`;
-                                feature_count = 1;
-                                total_features += 1;
+
+                                if(total_features >= 4)
+                                {
+                                    total_features = 3;
+                                }
                             }
 
-                            if (additional_features.length > 0) {
-                                let additional_features_index = 0;
-                                while (feature_count < total_features) {
+                            if(additional_features.length > 0)
+                            {
+                                for(let additional_features_index = 0;additional_features_index < total_features; additional_features_index++)
+                                {
                                     features += `<div class="col-6"><i class="text-warning fa-solid fa-bolt"></i> ${additional_features[additional_features_index]}</div>`;
-                                    additional_features_index++;
-                                    feature_count++;
                                 }
                             }
                             features += `</div>`;

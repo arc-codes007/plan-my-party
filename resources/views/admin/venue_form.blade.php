@@ -96,21 +96,21 @@
                                 </td>
                                 <td>
                                     <select disabled name="timmings[{{$day}}][from]" id="{{$day}}_from" class="{{$day.'time'}}" data-width="100%">
-                                        <option value="12am">12 AM</option>
-                                        @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.'am'}}">{{$hour.' AM'}}</option>
+                                        <option value="12 AM">12 AM</option>
+                                        @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.' AM'}}">{{$hour.' AM'}}</option>
                                             @endfor
-                                            <option value="12pm">12 PM</option>
-                                            @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.'pm'}}">{{$hour.' PM'}}</option>
+                                            <option value="12 PM">12 PM</option>
+                                            @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.' PM'}}">{{$hour.' PM'}}</option>
                                                 @endfor
                                     </select>
                                 </td>
                                 <td>
                                     <select disabled name="timmings[{{$day}}][to]" id="{{$day}}_to" class="{{$day.'time'}}" data-width="100%">
-                                        <option value="12am">12 AM</option>
-                                        @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.'am'}}">{{$hour.' AM'}}</option>
+                                        <option value="12 AM">12 AM</option>
+                                        @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.' AM'}}">{{$hour.' AM'}}</option>
                                             @endfor
-                                            <option value="12pm">12 PM</option>
-                                            @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.'pm'}}">{{$hour.' PM'}}</option>
+                                            <option value="12 PM">12 PM</option>
+                                            @for ($hour = 1; $hour < 12; ++$hour) <option value="{{$hour.' PM'}}">{{$hour.' PM'}}</option>
                                                 @endfor
                                     </select>
                                 </td>
