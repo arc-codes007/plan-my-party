@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BookingRequest;
 use App\Mail\GuestRating;
 use App\Models\Image;
 use App\Models\Invitation;
@@ -287,6 +288,28 @@ class PartyController extends Controller
         }
 
         $party_id = Party::create($party_data);
+
+        $logged_in_user = Auth::user();
+        $mail_data = array(
+            'name' => $logged_in_user->name,
+            'email' => $logged_in_user->email,
+            'phone' => $logged_in_user->phone,
+        );
+
+        $send_to = Venue::find($party_data['venue_id'])->contact_email;
+
+        if($party_data['package_id'] != null)
+        {
+            $package_data = Package::find($party_data['package_id']); 
+            if(!empty($package_data->contact_email))
+            {
+                $send_to = $package_data->contact_email;
+            }
+            $mail_data['package_name'] = $package_data->name;
+
+        }
+
+        Mail::to()->send(new BookingRequest($mail_data));
 
         if($party_id)
         {
