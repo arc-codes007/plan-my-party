@@ -1,7 +1,7 @@
 @component('mail::message')
  
 @if (isset($package_name))
-    Hello! There is a booking request for {{$pacakge_name}} package at your place.
+    Hello! There is a booking request for {{$package_name}} package at your place.
 @else
     Hello! There is a booking request for a Custom Party at your place.
 @endif

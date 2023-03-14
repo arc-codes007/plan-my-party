@@ -309,7 +309,7 @@ class PartyController extends Controller
 
         }
 
-        Mail::to()->send(new BookingRequest($mail_data));
+        Mail::to($send_to)->send(new BookingRequest($mail_data));
 
         if($party_id)
         {
